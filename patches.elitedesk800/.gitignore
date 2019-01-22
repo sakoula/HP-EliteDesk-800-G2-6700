@@ -1,0 +1,6 @@
+# this has all the information related to SMBIOS do not commit
+smbios*.plist
+config.elitedesk800.full.plist
+*.aml
+.*
+!.gitignore
