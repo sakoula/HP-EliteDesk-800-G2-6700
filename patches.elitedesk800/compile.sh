@@ -8,9 +8,9 @@
 ../../bin/iasl -p DSDT -ve DSDT.edited.dsl
 ../../bin/iasl -p SSDT-XOSI -ve SSDT-XOSI.dsl
 ../../bin/iasl -p SSDT-SMBUS -ve SSDT-SMBUS.dsl
-../../bin/iasl -p SSDT-EC -ve SSDT-EC.dsl
-../../bin/iasl -p SSDT-UIAC -ve SSDT-UIAC.dsl
-../../bin/iasl -p SSDT-USBX -ve SSDT-USBX.dsl
+# ../../bin/iasl -p SSDT-EC -ve SSDT-EC.dsl
+# ../../bin/iasl -p SSDT-UIAC -ve SSDT-UIAC.dsl
+# ../../bin/iasl -p SSDT-USBX -ve SSDT-USBX.dsl
 ../../bin/iasl -p SSDT-RMCF -ve SSDT-RMCF.dsl
 ../../bin/iasl -p SSDT-PTSWAK -ve SSDT-PTSWAK.dsl
 ../../bin/iasl -p SSDT-GPRW -ve SSDT-GPRW.dsl

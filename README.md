@@ -67,10 +67,7 @@ Hackintosh your HP EliteDesk 800 G2 Tower PC Skylake. This is intented to create
 
 * sleep [hibernation](https://www.tonymacx86.com/threads/guide-native-power-management-for-laptops.175801/) *work in progress (not focus of the guide)*
 * check whether this computer is affected by [goodwin/ALCPlugFix](https://github.com/goodwin/ALCPlugFix) *work in progress*
-* Rare kernel panic on boot *work in progress*
-* When connected with two monitors some times hangs on AppleLogo *work in progress*
 * Audio through DisplayPorts *has not checked and is not the focus of the guide*
-* Upon reboot there is a POST Error: 'Factory Default Settings Loaded Real-Time Power Loss (005)' (This is happening some times during reboot, does not affect anything). May be fixable with [acidanthera/RTCMemoryFixup](https://github.com/acidanthera/RTCMemoryFixup) *work in progress*
 * Enable HiDPI resolutions *work in progress*
 
 If you face another problem please open a issue.
@@ -78,11 +75,25 @@ If you face another problem please open a issue.
 ## Dual Monitor
 [up up up](#)
 
-> I have manage to have the computer worked with two monitors in 10.14.2. However this is still work in progress and have updated information soon.
+> Dual monitors works. Patching has been done using hackingtool. HotPlugging a monitor is not required. The following patch has been applied
 
-You can use the computer with two monitors attached on both DPs. See for the specific configuration in the Graphics section. However I have experience different behaviour with different monitors.
+```
+WhateverGreen: weg @ (DBG) agdpmod using config vit9696
+WhateverGreen: igfx @ (DBG) patching framebufferId 0x19120000 connector [1] busId: 0x05, pipe: 9, type: 0x00000400, flags: 0x00000187
+WhateverGreen: igfx @ (DBG) patching framebufferId 0x19120000 connector [2] busId: 0x06, pipe: 10, type: 0x00000400, flags: 0x00000187
+WhateverGreen: igfx @ (DBG) patching framebufferId 0x19120000 connector [3] busId: 0x04, pipe: 10, type: 0x00000400, flags: 0x00000187
+WhateverGreen: igfx @ (DBG) patching framebufferId 0x19120000 connector [-1] busId: 0x00, pipe: 0, type: 0x00000001, flags: 0x00000020
 
-This configuration works with an `HP EliteDisplay E242` on the top DP port and an `HP EliteDisplay E243i` on the bottom DP port. Sometimes when I pass the boot process and once it turns into 'graphics mode' (Apple Logo) the machine sometimes hangs there for some seconds and reboots (Framebuffer is crashing).
+Patch
+
+General > Devices/Properties
+General > Connectors
+General > Auto Detect Changes
+Advanced > FB Port Limit 3
+Device Id: 0x1912: Intel HD Graphics 530
+```
+
+This configuration works with an `HP EliteDisplay E242` on the top DP port and an `HP EliteDisplay E243i` on the bottom DP port. Very rarely when I pass the boot process and once it turns into 'graphics mode' (Apple Logo) the machine sometimes hangs there for some seconds and reboots (Framebuffer is crashing).
 
 I noticed that if I have only one monitor on the top DP port (any) the coputer boots fine and then I can hot plug the other monitor once on the logon screen I do not have any problem.
 
@@ -381,6 +392,32 @@ Download the latest [release](https://github.com/sakoula/HP-EliteDesk-800-G2-670
 
 ### Disable Hibernation
 [up up up](#)
+
+check your current state:
+
+```shell_session
+$ sudo pmset -g
+System-wide power settings:
+Currently in use:
+ standby              1
+ Sleep On Power Button 1
+ womp                 1
+ autorestart          0
+ hibernatefile        /var/vm/sleepimage
+ proximitywake        1
+ powernap             1
+ networkoversleep     0
+ disksleep            10
+ standbydelayhigh     86400
+ sleep                0 (sleep prevented by screensharingd)
+ autopoweroffdelay    28800
+ hibernatemode        3
+ autopoweroff         1
+ ttyskeepawake        1
+ displaysleep         0
+ highstandbythreshold 50
+ standbydelaylow      0
+```
 
 Be aware that hibernation (suspend to disk or S4 sleep) is not supported on hackintosh.
 

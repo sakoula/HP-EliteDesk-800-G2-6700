@@ -1,4 +1,4 @@
-# Xiaomi Mi Air 13.3'' Skylake-U 2016 for macOS Mojave & High Sierra
+# HP EliteDesk 800 G2 Tower PC (Skylake) for macOS Mojave
 
 # Table of Contents
 
@@ -10,8 +10,6 @@
 - [DSDT patching \(active patches\)](#dsdt-patching-active-patches)
     - [`DSDT.dsl`](#dsdtdsl)
     - [`patches.elitedesk800/SSDT-XOSI.dsl`](#patcheselitedesk800ssdt-xosidsl)
-    - [`patches.elitedesk800/SSDT-EC.dsl`](#patcheselitedesk800ssdt-ecdsl)
-    - [`patches.elitedesk800/SSDT-USBX.dsl`](#patcheselitedesk800ssdt-usbxdsl)
     - [`patches.elitedesk800/SSDT-RMCF.dsl`](#patcheselitedesk800ssdt-rmcfdsl)
     - [`patches.elitedesk800/SSDT-PTSWAK.dsl`](#patcheselitedesk800ssdt-ptswakdsl)
     - [`patches.elitedesk800/SSDT-GPRW.dsl`](#patcheselitedesk800ssdt-gprwdsl)
@@ -21,6 +19,9 @@
     - [`patches.elitedesk800/SSDT-MEM2.dsl`](#patcheselitedesk800ssdt-mem2dsl)
     - [`patches.elitedesk800/SSDT-PMCR.dsl`](#patcheselitedesk800ssdt-pmcrdsl)
     - [`patches.elitedesk800/SSDT-LPC.dsl`](#patcheselitedesk800ssdt-lpcdsl)
+- [DSDT patching \(retired patches\)](#dsdt-patching-retired-patches)
+    - [~~`patches.elitedesk800/SSDT-EC.dsl`~~](#%7E%7Epatcheselitedesk800ssdt-ecdsl%7E%7E)
+    - [~~`patches.elitedesk800/SSDT-USBX.dsl`~~](#%7E%7Epatcheselitedesk800ssdt-usbxdsl%7E%7E)
 - [`Clover installation`](#clover-installation)
 - [`Clover Config`](#clover-config)
     - [`ACPI`](#acpi)
@@ -38,7 +39,6 @@
     - [`AppleIntelInfo.kext`](#appleintelinfokext)
 - [Check disks with `smartclt`](#check-disks-with-smartclt)
 - [`patches.elitedesk800` DSDT hotpatches](#patcheselitedesk800-dsdt-hotpatches)
-- [PNP devices in DSDT :icecream:](#pnp-devices-in-dsdt-icecream)
 
 <!-- /MarkdownTOC -->
 
@@ -133,20 +133,6 @@ apply clover renames (OSIN first because there is some type of bug on the DSDT p
 
 This XOSI simulates "Windows 2015" (which is Windows 10)
 
-## `patches.elitedesk800/SSDT-EC.dsl`
-[up up up](#)
-
-according to this [article](https://www.tonymacx86.com/threads/guide-usb-power-property-injection-for-sierra-and-later.222266/) we do not need this so leave it in but keep it. There is an EC0 device but do not rename it. Instead inject the USBX
-
-> article](https://www.tonymacx86.com/threads/guide-usb-power-property-injection-for-sierra-and-later.222266/) Note: If your computer has an ECDT in ACPI, you should not rename anything along the EC path, including the EC itself. Use a "Fake EC" instead as described below. You can check if you have ECDT by extracting ACPI with Clover (F4) and checking for ECDT.aml in EFI/Clover/ACPI/origin.
-
-> Note: You may find you have an EC in your DSDT: Device with "Name (_HID, EisaId ("PNP0C09"))", even if it is not active.
-
-## `patches.elitedesk800/SSDT-USBX.dsl`
-[up up up](#)
-
-This has the `USBX` device for the power injection according to the [article](https://www.tonymacx86.com/threads/guide-usb-power-property-injection-for-sierra-and-later.222266/) 
-
 ## `patches.elitedesk800/SSDT-RMCF.dsl`
 [up up up](#)
 
@@ -209,6 +195,27 @@ Add missing PMCR Device to enhace performance like a real Mac. Inspired by [sysc
 
 To fix unsupported 8-series LPC devices. looked in ioreg and look for LPC. mine is 0x9d48 which is included here
 
+# DSDT patching (retired patches)
+[up up up](#)
+
+## ~~`patches.elitedesk800/SSDT-EC.dsl`~~
+[up up up](#)
+
+**February 2019**: after looking the DSDT.dsl it turns out that there is an `EC0`. So I applied the EC0 to EC rename patch in the config.plist
+
+according to this [article](https://www.tonymacx86.com/threads/guide-usb-power-property-injection-for-sierra-and-later.222266/) we do not need this so leave it in but keep it. There is an EC0 device but do not rename it. Instead inject the USBX
+
+> article](https://www.tonymacx86.com/threads/guide-usb-power-property-injection-for-sierra-and-later.222266/) Note: If your computer has an ECDT in ACPI, you should not rename anything along the EC path, including the EC itself. Use a "Fake EC" instead as described below. You can check if you have ECDT by extracting ACPI with Clover (F4) and checking for ECDT.aml in EFI/Clover/ACPI/origin.
+
+> Note: You may find you have an EC in your DSDT: Device with "Name (_HID, EisaId ("PNP0C09"))", even if it is not active.
+
+## ~~`patches.elitedesk800/SSDT-USBX.dsl`~~
+[up up up](#)
+
+**February 2019**: This is done now using the codeless kext `USBPorts.kext` produced from the Hackingtool
+
+This has the `USBX` device for the power injection according to the [article](https://www.tonymacx86.com/threads/guide-usb-power-property-injection-for-sierra-and-later.222266/) 
+
 # `Clover installation`
 [up up up](#)
 
@@ -251,6 +258,9 @@ In general I prefer the Clover Configurator although it it not reccomended
 * `DSDT > Fixes > AddMCHC > YES`
 * `DSDT > Fixes > FixADP1 > YES`
 * `DSDT > Fixes > FixTMR > YES`
+* `DSDT > Fixes > FixRTC > YES`
+* `DSDT > Fixes > FixHPET > YES`
+* `DSDT > Fixes > FixIPIC > YES`
 * `DSDT > Fixes > FixRegions > YES` *only when using custom DSDT.aml*
 
 * `DSDT > Patches`
@@ -297,6 +307,11 @@ In general I prefer the Clover Configurator although it it not reccomended
     <key>Comment</key> <string>change Method(GPRW,2,N) to XPRW (SSDT-GPRW.dsl)</string>
     <key>Find</key> <data>R1BSVwI=</data>
     <key>Replace</key> <data>WFBSVwI=</data>
+</dict>
+<dict>
+    <key>Comment</key> <string>change EC0 to EC (USB Related)</string> 
+    <key>Find</key> <data>RUMwXw==</data>
+    <key>Replace</key> <data>RUNfXw==</data>
 </dict>
 </array>
 ```
@@ -359,14 +374,48 @@ In general I prefer the Clover Configurator although it it not reccomended
 ```xml
 <key>PciRoot(0x0)/Pci(0x2,0x0)</key>
 <dict>
-   <key>AAPL,ig-platform-id</key>
-   <data>
-   AAASGQ==
-   </data>
-   <key>device-id</key>
-   <data>
-   EhkAAA==
-   </data>
+    <key>AAPL,ig-platform-id</key>
+    <data>AAASGQ==</data>
+    <key>device-id</key>
+    <data>EhkAAA==</data>
+    <key>framebuffer-con0-busid</key>
+    <data>BQAAAA==</data>
+    <key>framebuffer-con0-enable</key>
+    <data>AQAAAA==</data>
+    <key>framebuffer-con0-flags</key>
+    <data>hwEAAA==</data>
+    <key>framebuffer-con0-index</key>
+    <data>AQAAAA==</data>
+    <key>framebuffer-con0-pipe</key>
+    <data>CQAAAA==</data>
+    <key>framebuffer-con0-type</key>
+    <data>AAQAAA==</data>
+    <key>framebuffer-con1-busid</key>
+    <data>BgAAAA==</data>
+    <key>framebuffer-con1-enable</key>
+    <data>AQAAAA==</data>
+    <key>framebuffer-con1-index</key>
+    <data>AgAAAA==</data>
+    <key>framebuffer-con1-pipe</key>
+    <data>CgAAAA==</data>
+    <key>framebuffer-con2-enable</key>
+    <data>AQAAAA==</data>
+    <key>framebuffer-con2-index</key>
+    <data>AwAAAA==</data>
+    <key>framebuffer-con3-busid</key>
+    <data>AAAAAA==</data>
+    <key>framebuffer-con3-enable</key>
+    <data>AQAAAA==</data>
+    <key>framebuffer-con3-flags</key>
+    <data>IAAAAA==</data>
+    <key>framebuffer-con3-index</key>
+    <data>/////w==</data>
+    <key>framebuffer-con3-pipe</key>
+    <data>AAAAAA==</data>
+    <key>framebuffer-con3-type</key>
+    <data>AQAAAA==</data>
+    <key>framebuffer-patch-enable</key>
+    <data>AQAAAA==</data>
 </dict>
 ```
 
@@ -432,6 +481,8 @@ In general I prefer the Clover Configurator although it it not reccomended
 
 ```xml
 <key>KernelPm</key> <true/>
+<key>AppleRTC</key> <true/>
+<key>KernelXCPM</key> <true/>
 ```
 
 ```xml
@@ -468,27 +519,9 @@ In general I prefer the Clover Configurator although it it not reccomended
 </array>
 ```
 
-the *HD530 dual monitor patch for HP EliteDesk800 G2 TWR* is disabled for now
-
 ```xml
 <key>KextsToPatch</key>
 <array>
-    <dict>
-        <key>Comment</key>
-        <string>HD530 dual monitor patch for HP EliteDesk800 G2 TWR</string>
-        <key>Disabled</key>
-        <true/>
-        <key>Find</key>
-        <data>wAAAAEAAAAgAAAAAQUJAAAEAACHAQAAAgQKAAAEAACHAQAAAwYKAAAEAACHAQAA</data>
-        <key>InfoPlistPatch</key>
-        <false/>
-        <key>MatchOS</key>
-        <string>10.14.x</string>
-        <key>Name</key>
-        <string>AppleIntelSKLGraphicsFramebuffer</string>
-        <key>Replace</key>
-        <data>AQUJAAAEAACHAQAAAgYKAAAEAACHAQAAAwQKAAAEAACHAQAA/wAAAAEAAAAgAAAA</data>
-    </dict>
     <dict>
         <key>Comment</key>
         <string>Enable TRIM for SSD</string>
@@ -591,48 +624,58 @@ consult [this link](https://www.tonymacx86.com/threads/guide-native-power-manage
 stock settings
 
 ```shell
-$ pmset -g
+$ sudo pmset -g
 System-wide power settings:
 Currently in use:
  standby              1
- halfdim              1
+ Sleep On Power Button 1
+ womp                 1
+ autorestart          0
  hibernatefile        /var/vm/sleepimage
+ proximitywake        1
  powernap             1
- gpuswitch            2
+ networkoversleep     0
  disksleep            10
- sleep                1
+ standbydelayhigh     86400
+ sleep                0 (sleep prevented by screensharingd)
  autopoweroffdelay    28800
  hibernatemode        3
  autopoweroff         1
  ttyskeepawake        1
- displaysleep         2
- tcpkeepalive         1
- standbydelay         10800
+ displaysleep         0
+ highstandbythreshold 50
+ standbydelaylow      0
 ```
 
 **I did not do any edits you could try**
 
 ```shell
 $ sudo pmset -a hibernatemode 0
+$ sudo rm /var/vm/sleepimage
+$ sudo mkdir /var/vm/sleepimage
 $ sudo pmset -a standby 0
 $ sudo pmset -a autopoweroff 0
-$ pmset -g
+$ sudo pmset -g
 System-wide power settings:
 Currently in use:
  standby              0
- halfdim              1
+ Sleep On Power Button 1
+ womp                 1
+ autorestart          0
  hibernatefile        /var/vm/sleepimage
+ proximitywake        1
  powernap             1
- gpuswitch            2
+ networkoversleep     0
  disksleep            10
- sleep                1
+ standbydelayhigh     86400
+ sleep                0 (sleep prevented by screensharingd)
  autopoweroffdelay    28800
  hibernatemode        0
  autopoweroff         0
  ttyskeepawake        1
- displaysleep         2
- tcpkeepalive         1
- standbydelay         10800
+ displaysleep         0
+ highstandbythreshold 50
+ standbydelaylow      0
 ```
 
 ## `AppleIntelInfo.kext`
@@ -966,10 +1009,7 @@ If Selective self-test is pending on power-up, resume after 0 minute delay.
 
 * sleep [hibernation](https://www.tonymacx86.com/threads/guide-native-power-management-for-laptops.175801/) *work in progress (not focus of the guide)*
 * check whether this computer is affected by [goodwin/ALCPlugFix](https://github.com/goodwin/ALCPlugFix) *work in progress*
-* Rare kernel panic on boot *work in progress*
-* When connected with two monitors some times hangs on AppleLogo
 * Audio through DisplayPorts *has not checked and is not the focused of the guide*
-* Upon reboot there is a POST Error: 'Factory Default Settings Loaded Real-Time Power Loss (005)' (This is happening some times during reboot, does not affect anything). May be fixable with [acidanthera/RTCMemoryFixup](https://github.com/acidanthera/RTCMemoryFixup) *work in progress*
 * Enable HiDPI resolutions *work in progress*
 
 # `patches.elitedesk800` DSDT hotpatches
@@ -992,151 +1032,3 @@ SSDT-USBX.dsl
 SSDT-XOSI.dsl
 ```
 
-# PNP devices in DSDT :icecream:
-[up up up](#)
-
-*WIP*
-
-```
-Scope (_SB)
-Device (PCI0) 
-Name (_HID, EisaId ("PNP0A08"))  // _HID: Hardware ID
-Name (_CID, EisaId ("PNP0A03"))  // _CID: Compatible ID
-
-Scope (_SB.PCI0)
-Device (PRRE)
-Name (_HID, EisaId ("PNP0C02"))  // _HID: Hardware ID
-Name (_UID, "PCHRESV")  // _UID: Unique ID
-
-Scope (_SB.PCI0)
-Device (IOTR)
-Name (_HID, EisaId ("PNP0C02"))  // _HID: Hardware ID
-Name (_UID, "IoTraps")  // _UID: Unique ID
-
-Scope (_SB)
-Device (LNKA)
-Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
-Name (_UID, One)  // _UID: Unique ID
-Device (LNKB)
-Name (_UID, 0x02)  // _UID: Unique ID
-...
-Device (LNKH)
-Name (_UID, 0x08)  // _UID: Unique ID
-
-Scope (_SB.PCI0)
-Device (SIRC)
-Name (_HID, EisaId ("PNP0C02"))  // _HID: Hardware ID
-Name (_STA, 0x03)  // _STA: Status
-Name (_UID, 0x05)  // _UID: Unique ID
-
-Scope (_SB.PCI0.LPCB)
-Device (HPET)
-Name (_HID, EisaId ("PNP0103"))  // _HID: Hardware ID
-Name (_UID, Zero)  // _UID: Unique ID
-
-Scope (_SB.PCI0.LPCB)
-Device (IPIC)
-Name (_HID, EisaId ("PNP0000"))  // _HID: Hardware ID
-
-Scope (_SB.PCI0.LPCB)
-Device (MATH)
-Name (_HID, EisaId ("PNP0C04"))  // _HID: Hardware ID
-
-Scope (_SB.PCI0.LPCB)
-Device (LDRC)
-Name (_HID, EisaId ("PNP0C02"))  // _HID: Hardware ID
-
-Scope (_SB.PCI0.LPCB)
-Device (LDR2)
-Name (_HID, EisaId ("PNP0C02"))  // _HID: Hardware ID
-Name (_UID, "LPC_DEV")  // _UID: Unique ID
-
-Scope (_SB.PCI0.LPCB)
-Device (RTC)
-Name (_HID, EisaId ("PNP0B00"))  // _HID: Hardware ID
-
-Scope (_SB.PCI0.LPCB)
-Device (TIMR)
-Name (_HID, EisaId ("PNP0100"))  // _HID: Hardware ID
-
-Scope (_SB.PCI0.LPCB)
-Device (CWDT)
-Name (_HID, EisaId ("INT3F0D"))  // _HID: Hardware ID
-Name (_CID, EisaId ("PNP0C02"))  // _CID: Compatible ID
-
-Scope (_SB)
-Device (WMTF)
-Name (_HID, "PNP0C14")  // _HID: Hardware ID
-Name (_UID, "TBFP")  // _UID: Unique ID
-
-Scope (_SB.PCI0)
-Device (PDRC)
-Name (_HID, EisaId ("PNP0C02"))  // _HID: Hardware ID
-Name (_UID, One)  // _UID: Unique ID
-
-Scope (_SB)
-Device (PEPD)
-Name (_HID, "INT33A1")  // _HID: Hardware ID
-Name (_CID, EisaId ("PNP0D80"))  // _CID: Compatible ID
-Name (_UID, One)  // _UID: Unique ID
-
-Scope (_SB.PCI0.LPCB)
-Device (EC0)
-Name (_HID, EisaId ("PNP0C09"))  // _HID: Hardware ID
-Name (_GPE, 0x4F)  // _GPE: General Purpose Events
-Name (\ECOK, Zero)
-Method (_STA, 0, NotSerialized)  // _STA: Status
-
-Scope (_SB.PCI0.LPCB.EC0)
-Device (BAT0)
-Name (_HID, EisaId ("PNP0C0A"))  // _HID: Hardware ID
-Name (_UID, Zero)  // _UID: Unique ID
-Name (_DDN, "0")  // _DDN: DOS Device Name
-Method (_PCL, 0, NotSerialized)  // _PCL: Power Consumer List
-
-Scope (_SB.PCI0.LPCB)
-Device (KBD0)
-Name (_HID, "TIMI1601")  // _HID: Hardware ID
-Name (_CID, EisaId ("PNP0303"))  // _CID: Compatible ID
-Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
-
-Scope (_SB)
-Device (LID0)
-Name (_HID, EisaId ("PNP0C0D"))  // _HID: Hardware ID
-Method (_STA, 0, NotSerialized)  // _STA: Status
-
-Scope (_SB)
-Device (SLPB)
-Name (_HID, EisaId ("PNP0C0E"))  // _HID: Hardware ID
-Name (_STA, 0x0B)  // _STA: Status
-
-Scope (_SB)
-Device (AMW0)
-Name (_HID, EisaId ("PNP0C14"))  // _HID: Hardware ID
-Name (_UID, "WST")  // _UID: Unique ID
-Name (WLMP, Zero)
-Name (WMID, Zero)
-
-Scope (_SB)
-Device (WMID)
-Name (_HID, "PNP0C14")  // _HID: Hardware ID
-Name (_UID, "WOSD")  // _UID: Unique ID
-
-Scope (_SB.PCI0.I2C1)
-Device (TPD0)
-Name (_ADR, One)  // _ADR: Address
-Name (_HID, "ELAN0501")  // _HID: Hardware ID
-Name (_CID, "PNP0C50")  // _CID: Compatible ID
-Name (_UID, One)  // _UID: Unique ID
-Name (_S0W, 0x03)  // _S0W: S0 Device Wake State
-Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
-    If (LEqual (Arg0, ToUUID ("3cdff6f7-4267-4555-ad05-b30a3d8938de") /* HID I2C Device */))
-
-Scope (_SB.PCI0.I2C1)
-Device (TPD1)
-Name (_HID, "SYN1B7F")  // _HID: Hardware ID
-Name (_CID, "PNP0C50")  // _CID: Compatible ID
-Name (_S0W, 0x03)  // _S0W: S0 Device Wake State
-Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
-    If (LEqual (Arg0, ToUUID ("3cdff6f7-4267-4555-ad05-b30a3d8938de") /* HID I2C Device */))
-```
