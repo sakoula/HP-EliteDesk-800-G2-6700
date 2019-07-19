@@ -8,7 +8,7 @@ Hackintosh your HP EliteDesk 800 G2 Tower PC Skylake. This is intented to create
 * This guide is for the **HP EliteDesk 800 G2 TWR PC i7-6700 (Skylake)**. 
 * All files used and detailed readmes are located in github [sakoula/HP-EliteDesk-800-G2-6700](https://github.com/sakoula/HP-EliteDesk-800-G2-6700/blob/master/Changelog.md)
 * The guide was fully tested with **BIOS N01 Ver. 2.36 07/18/2018**
-* Following this guide you can run any version of **Mojave 10.14.x**
+* Following this guide you can run any version of **Mojave 10.14.x up to 10.14.5** 
 * macOS has been installed on an internal SSD. I have no experience of having both Windows and macOS on a single disk.
 * In order to be able to help you please provide full debug information useing the excellent [black-dragon74/OSX-Debug
 ](https://github.com/black-dragon74/OSX-Debug) tool.
@@ -35,7 +35,7 @@ Hackintosh your HP EliteDesk 800 G2 Tower PC Skylake. This is intented to create
 	- [Install Mojave](#install-mojave)
 	- [Install `Clover` on the macOS disk](#install-clover-on-the-macos-disk)
 	- [Customize Clover on the macOS disk](#customize-clover-on-the-macos-disk)
-	- [Move kexts to `/Library/Extentions`](#move-kexts-to-libraryextentions)
+	- [Move kexts to `/Library/Extensions`](#move-kexts-to-libraryextensions)
 	- [Create a USB Flash Drive just with `Clover` for emergencies](#create-a-usb-flash-drive-just-with-clover-for-emergencies)
 - [Postinstallation Steps](#postinstallation-steps)
 	- [Create a valid SMBIOS](#create-a-valid-smbios)
@@ -159,7 +159,7 @@ Make sure that you check with this [link](http://support.hp.com/us-en/product/hp
 
 * `sp90164`: HP EliteDesk 800 G2 TWR/SFF SystemBIOS (N01) / 02.36 Rev.A / Aug 13, 2018
 
-> Note: Update the BIOS from the BIOS itself. On the CLOVER USB stick place all bios files in *EFI/HP/BIOS/new*. On Finder create an extra EFI directory under the mounted EFI exactly as Clover do.
+> Note: Update the BIOS from the BIOS itself. On the CLOVER USB stick place bios file *N01_0236.bin* in directory *EFI/HP/BIOS/new*. On Finder create an extra EFI directory under the mounted EFI exactly as Clover do.
 
 Get into the `BIOS` and make the following changes:
 
@@ -220,25 +220,19 @@ Download mojave from Apple AppStore and run the following command to install it 
 ### Install `Clover` to the USB Flash Drive
 [up up up](#)
 
-Rehabman's fork of clover tends to be more stable so we are goinf to use this. Download it from [here](https://bitbucket.org/RehabMan/clover/downloads/).
+Go with the stock clover and run `Clover_v2.5k_r5018` installer:
 
-Run `Clover_v2.4k_r4701.RM-4963.ca6cca7c` installer:
+*Continue* > *Continue* > *Change Install Location* > *Install macOS Mojave* > *Customize*
 
-*Clover for UEFI booting only*, *Install Clover in the ESP*
+*Clover for UEFI booting only*, *Install Clover in the ESP*, *Drivers off*
 
-*UEFI Drivers* / `drivers64UEFI`:
-
-* `ApfsDriverLoader-64.efi`
-* `AppleImageLoader-64.efi`
-* `AptioMemoryFix-64.efi`
-* `DataHubDxe-64.efi`
-* `FSInject-64.efi`
+* `AudioDxe.efi`
+* `DataHubDxe.efi`
+* `FSInject.efi.efi`
 
 *FileVault 2 UEFI Drivers* / `drivers64UEFI`:
 
-* `AppleKeyFeeder-64.efi`
-* `AppleUISupport-64.efi`
-* `AptioInputFix-64.efi`
+* `AppleKeyFeeder.efi`
 
 ### Customize Clover on the USB Flash Drive
 [up up up](#)
@@ -247,15 +241,11 @@ Download the latest [release](https://github.com/sakoula/HP-EliteDesk-800-G2-670
 
 1. copy `ELITEDESK800_EFI/CLOVER/kexts/Other` from the downloaded file to USB's EFI to `EFI/CLOVER/kexts/Other`
 
-2. make sure that on the USB's EFI `EFI/CLOVER/kexts/Other` you just have `Lilu.kext`, `WhateverGreen.kext`, `USBInjectAll.kext`, `IntelMausiEthernet.kext`, `VirtualSMC.kext`, `SATA-unsupported.kext`. **Erase the rest**.
+2. copy `addons/HFSPlus.efi`, `addons/VirtualSmc.efi`, `addons/ApfsDriverLoader.efi`, `addons/AppleUiSupport.efi`, `addons/AptioInputFix.efi`, `addons/AptioMemoryFix.efi` from the downloaded file to USB's EFI to `EFI/CLOVER/drivers/UEFI/`
 
-3. copy `addons/HFSPlus.efi` from the downloaded file to USB's EFI to `EFI/CLOVER/drivers64UEFI/HFSPlus.efi`
+3. copy `ELITEDESK800_EFI/CLOVER/ACPI/PATCHED/*` from the downloaded file to USB's EFI to `EFI/CLOVER/ACPI/PATCHED/*`
 
-4. copy `addons/VirtualSmc.efi` from the downloaded file to USB's EFI to `EFI/CLOVER/drivers64UEFI/VirtualSmc.efi`
-
-5. copy `ELITEDESK800_EFI/CLOVER/ACPI/PATCHED/*` from the downloaded file to USB's EFI to `EFI/CLOVER/ACPI/PATCHED/*`
-
-6. copy `ELITEDESK800_EFI/CLOVER/config.plist` from the downloaded file to USB's EFI to `EFI/CLOVER/ACPI/config.plist`
+4. copy `ELITEDESK800_EFI/CLOVER/config.plist` from the downloaded file to USB's EFI to `EFI/CLOVER/config.plist`
 
 ### Install Mojave
 [up up up](#)
@@ -271,23 +261,19 @@ Boot from the USB and install Mojave on the hard disk.
 
 Once the installation is over you will need to install `Clover` bootloader on the hard disk that you have installed macOS in order to be able to boot without the USB Flash Drive.
 
-Run again the `Clover_v2.4k_r4701.RM-4963.ca6cca7c` installer:
+Run again the `Clover_v2.5k_r5018` installer:
 
-*Clover for UEFI booting only*, *Install Clover in the ESP*
+*Continue* > *Continue* > *Change Install Location* > *macOS location* > *Customize*
 
-*UEFI Drivers* / `drivers64UEFI`:
+*Clover for UEFI booting only*, *Install Clover in the ESP*, *Drivers off*
 
-* `ApfsDriverLoader-64.efi`
-* `AppleImageLoader-64.efi`
-* `AptioMemoryFix-64.efi`
-* `DataHubDxe-64.efi`
-* `FSInject-64.efi`
+* `AudioDxe.efi`
+* `DataHubDxe.efi`
+* `FSInject.efi.efi`
 
 *FileVault 2 UEFI Drivers* / `drivers64UEFI`:
 
-* `AppleKeyFeeder-64.efi`
-* `AppleUISupport-64.efi`
-* `AptioInputFix-64.efi`
+* `AppleKeyFeeder.efi`
 
 *Install Clover Preference Pane*
 
@@ -298,32 +284,30 @@ Download the latest [release](https://github.com/sakoula/HP-EliteDesk-800-G2-670
 
 Mount the EFI partition of the macOS boot parition on `/Volumes/EFI`:
 
-1. copy `ELITEDESK800_EFI/CLOVER/kexts/Other` from the downloaded file to USB's EFI to `EFI/CLOVER/kexts/Other`
+1. copy `ELITEDESK800_EFI/CLOVER/kexts/Other` from the downloaded file to macOS location `EFI/CLOVER/kexts/Other`
 
-2. copy `addons/HFSPlus.efi` from the downloaded file to USB's EFI to `EFI/CLOVER/drivers64UEFI/HFSPlus.efi`
+2. copy `addons/HFSPlus.efi`, `addons/VirtualSmc.efi`, `addons/ApfsDriverLoader.efi`, `addons/AppleUiSupport.efi`, `addons/AptioInputFix.efi`, `addons/AptioMemoryFix.efi` from the downloaded file to macOS location `EFI/CLOVER/drivers/UEFI/`
 
-3. copy `addons/VirtualSmc.efi` from the downloaded file to USB's EFI to `EFI/CLOVER/drivers64UEFI/VirtualSmc.efi`
+3. copy `ELITEDESK800_EFI/CLOVER/ACPI/PATCHED/*` from the downloaded file to macOS location `EFI/CLOVER/ACPI/PATCHED/*`
 
-4. copy `ELITEDESK800_EFI/CLOVER/ACPI/PATCHED/*` from the downloaded file to USB's EFI to `EFI/CLOVER/ACPI/PATCHED/*`
+4. copy `ELITEDESK800_EFI/CLOVER/config.plist` from the downloaded file to macOS location `EFI/CLOVER/config.plist`
 
-5. copy `ELITEDESK800_EFI/CLOVER/config.plist` from the downloaded file to USB's EFI to `EFI/CLOVER/ACPI/config.plist`
-
-### Move kexts to `/Library/Extentions`
+### Move kexts to `/Library/Extensions`
 [up up up](#)
 
-The right way to load kexts is **not** by injecting them through clover but installing them in `/Library/Extentions` and building them into the kernel cache. 
+The right way to load kexts is **not** by injecting them through clover but installing them in `/Library/Extensions` and building them into the kernel cache. 
 
 Download the latest [release](https://github.com/sakoula/HP-EliteDesk-800-G2-6700/releases) from github and unzip the archive. You will find an `ELITEDESK800_EFI` directory and a `addons` directory. 
 
 Mount the EFI partition of the macOS boot parition on `/Volumes/EFI`:
 
-1. **move** `EFI/CLOVER/kexts/Other/*` from macOS boot parition to `/Library/Extentions/*`
-2. run from the console `$ sudo chown -R root:wheel /Library/Extentions/*`
-3. run from the console `$ sudo chmod -r 755 /Library/Extentions/*`
+1. **move** `EFI/CLOVER/kexts/Other/*` from macOS boot parition to `/Library/Extensions/*`
+2. run from the console `$ sudo chown -R root:wheel /Library/Extensions/*`
+3. run from the console `$ sudo chmod -R 755 /Library/Extensions/*`
 4. run from the console `$ sudo kextcache -i /` to rebuild the caches
-5. **move** `addons/LiluFriendLite.kext` from the downloaded file to `/Library/Extentions/LiluFriendLite.kext`
-6. run from the console `$ sudo chown -R root:wheel /Library/Extentions/*`
-7. run from the console `$ sudo chmod -r 755 /Library/Extentions/*`
+5. **move** `addons/LiluFriendLite.kext` from the downloaded file to `/Library/Extensions/LiluFriendLite.kext`
+6. run from the console `$ sudo chown -R root:wheel /Library/Extensions/*`
+7. run from the console `$ sudo chmod -r 755 /Library/Extensions/*`
 8. run from the console `$ sudo kextcache -i /` to rebuild the caches
 
 **remember** that `kextcache` needs to be run twice
@@ -339,39 +323,31 @@ Get a small (2GB will work just fine) USB Flash Drive and:
 * Name: CLOVER
 * Format: MS-DOS-FAT
 
-Run the `Clover_v2.4k_r4701.RM-4963.ca6cca7c` installer:
+Run the `Clover_v2.5k_r5018` installer:
 
-*Clover for UEFI booting only*, *Install Clover in the ESP*
+*Continue* > *Continue* > *Change Install Location* > *USB Flash Drive* > *Customize*
 
-*UEFI Drivers* / `drivers64UEFI`:
+*Clover for UEFI booting only*, *Install Clover in the ESP*, *Drivers off*
 
-* `ApfsDriverLoader-64.efi`
-* `AppleImageLoader-64.efi`
-* `AptioMemoryFix-64.efi`
-* `DataHubDxe-64.efi`
-* `FSInject-64.efi`
+* `AudioDxe.efi`
+* `DataHubDxe.efi`
+* `FSInject.efi.efi`
 
 *FileVault 2 UEFI Drivers* / `drivers64UEFI`:
 
-* `AppleKeyFeeder-64.efi`
-* `AppleUISupport-64.efi`
-* `AptioInputFix-64.efi`
+* `AppleKeyFeeder.efi`
 
 Download the latest [release](https://github.com/sakoula/HP-EliteDesk-800-G2-6700/releases) from github and unzip the archive. You will find an `ELITEDESK800_EFI` directory and a `addons` directory. Mount the USB Flash Drive's `EFI` partition on `/Volumes/EFI`:
 
 1. copy `ELITEDESK800_EFI/CLOVER/kexts/Other` from the downloaded file to USB's EFI to `EFI/CLOVER/kexts/Other`
 
-2. make sure that on `EFI/CLOVER/kexts/Other` you just have ``Lilu.kext`, `WhateverGreen.kext`, `USBInjectAll.kext`, `IntelMausiEthernet.kext`, `VirtualSMC.kext`, `SATA-unsupported.kext`. **Erase the rest**.
+2. copy `addons/HFSPlus.efi`, `addons/VirtualSmc.efi`, `addons/ApfsDriverLoader.efi`, `addons/AppleUiSupport.efi`, `addons/AptioInputFix.efi`, `addons/AptioMemoryFix.efi` from the downloaded file to USB's EFI to `EFI/CLOVER/drivers/UEFI/`
 
-3. copy `addons/HFSPlus.efi` from the downloaded file to USB's EFI to `EFI/CLOVER/drivers64UEFI/HFSPlus.efi`
+3. copy `ELITEDESK800_EFI/CLOVER/ACPI/PATCHED/*` from the downloaded file to USB's EFI to `EFI/CLOVER/ACPI/PATCHED/*`
 
-4. copy `addons/VirtualSmc.efi` from the downloaded file to USB's EFI to `EFI/CLOVER/drivers64UEFI/VirtualSmc.efi`
+4. copy `ELITEDESK800_EFI/CLOVER/config.plist` from the downloaded file to USB's EFI to `EFI/CLOVER/config.plist`
 
-5. copy `ELITEDESK800_EFI/CLOVER/ACPI/PATCHED/*` from the downloaded file to USB's EFI to `EFI/CLOVER/ACPI/PATCHED/*`
-
-6. copy `ELITEDESK800_EFI/CLOVER/config.plist` from the downloaded file to USB's EFI to `EFI/CLOVER/ACPI/config.plist`
-
-7. edit `config.plist` change the `SystemParameters`:
+5. edit `config.plist` change the `SystemParameters`:
 
 ```xml
 <dict>
@@ -550,20 +526,12 @@ kext patches in `/CLOVER/kexts/Other` applied:
 ### USB
 [up up up](#)
 
-* USB Port Patching uses [[Guide] Creating a Custom SSDT for USBInjectAll.kext](https://www.tonymacx86.com/threads/guide-creating-a-custom-ssdt-for-usbinjectall-kext.211311/), related file is located in `/CLOVER/kexts/Other/USBPorts.kext`.
-
-It it important to note that due to the large number of usb ports, some of them have been disabled:
+USB port patching is being done using USBPorts.kext generated by HackingTool
 
 * USB back, bottom row, 1rst from left
 * USB back, bottom row, 2nd from left
 * USB back, bottom row, 3rd from left
 * USB back, bottom row, 4rth from left
-
-ACPI patches in `/CLOVER/ACPI/patched` applied:
-
-* `SSDT-EC.aml` add EC0 device for usb power injection
-* `SSDT-USBX.aml` USB power properties via USBX device
-* `SSDT-UIAC.aml` Port Patching
 
 ## Changelog
 [up up up](#)

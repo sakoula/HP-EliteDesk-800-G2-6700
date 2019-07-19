@@ -11,14 +11,14 @@
 # ../../bin/iasl -p SSDT-EC -ve SSDT-EC.dsl
 # ../../bin/iasl -p SSDT-UIAC -ve SSDT-UIAC.dsl
 # ../../bin/iasl -p SSDT-USBX -ve SSDT-USBX.dsl
-../../bin/iasl -p SSDT-RMCF -ve SSDT-RMCF.dsl
-../../bin/iasl -p SSDT-PTSWAK -ve SSDT-PTSWAK.dsl
-../../bin/iasl -p SSDT-GPRW -ve SSDT-GPRW.dsl
-../../bin/iasl -p SSDT-DMAC -ve SSDT-DMAC.dsl
-../../bin/iasl -p SSDT-HPET -ve SSDT-HPET.dsl
-../../bin/iasl -p SSDT-MEM2 -ve SSDT-MEM2.dsl
-../../bin/iasl -p SSDT-PMCR -ve SSDT-PMCR.dsl
-../../bin/iasl -p SSDT-LPC -ve SSDT-LPC.dsl
+../../bin/iasl -p SSDT-RMCF -ve SSDT-RMCF.dsl #
+../../bin/iasl -p SSDT-PTSWAK -ve SSDT-PTSWAK.dsl #
+../../bin/iasl -p SSDT-GPRW -ve SSDT-GPRW.dsl #
+../../bin/iasl -p SSDT-DMAC -ve SSDT-DMAC.dsl #
+../../bin/iasl -p SSDT-HPET -ve SSDT-HPET.dsl #
+../../bin/iasl -p SSDT-MEM2 -ve SSDT-MEM2.dsl #
+../../bin/iasl -p SSDT-PMCR -ve SSDT-PMCR.dsl #
+../../bin/iasl -p SSDT-LPC -ve SSDT-LPC.dsl #
 # only if you need debug with ACPIDebug.kext
 # ../../bin/iasl -p SSDT-RMDT -ve SSDT-RMDT.dsl
 

@@ -178,15 +178,21 @@ Add missing DMAC Device to enhace performance like a real Mac. Inspired by [sysc
 
 Disable HPET device by passing value 0 to HPTE to to behave more like a real Mac.
 
+> updated 20190718 (from daliansky/XiaoMi-Pro-Hackintosh repository)
+
 ## `patches.elitedesk800/SSDT-MEM2.dsl` 
 [up up up](#)
 
 Add missing MEM2 Device to enhace performance like a real Mac. Inspired by [syscl](https://github.com/syscl/XPS9350-macOS/tree/master/DSDT/patches). 
 
+> updated 20190718 (from daliansky/XiaoMi-Pro-Hackintosh repository)
+
 ## `patches.elitedesk800/SSDT-PMCR.dsl` 
 [up up up](#)
 
 Add missing PMCR Device to enhace performance like a real Mac. Inspired by [syscl](https://github.com/syscl/XPS9350-macOS/tree/master/DSDT/patches). (PPMC and PMCR combine together for macOS to load LPCB correctly). 
+
+> updated 20190718 (from daliansky/XiaoMi-Pro-Hackintosh repository)
 
 ## `patches.elitedesk800/SSDT-LPC.dsl`
 [up up up](#)
@@ -219,25 +225,33 @@ This has the `USBX` device for the power injection according to the [article](ht
 # `Clover installation`
 [up up up](#)
 
-I have read in many places including [here](https://www.tonymacx86.com/threads/guide-hp-elite-8300-hp-6300-pro-using-clover-uefi-hotpatch.265384/) that RehabMan's clover fork is more stable so this is the one we are going to use.
+~~I have read in many places including [here](https://www.tonymacx86.com/threads/guide-hp-elite-8300-hp-6300-pro-using-clover-uefi-hotpatch.265384/) that RehabMan's clover fork is more stable so this is the one we are going to use.~~ **July 2019 update:** I switched to latest official all other repositories have being doing this
+
+Regarding the drivers used some of them where from the clover distribution and some of them are forks from [acidanthera](https://github.com/acidanthera) github repository. More specifically I have used:
+
+* `AptioInputFix.efi` from [acidanthera/AptioFixPkg](https://github.com/acidanthera/AptioFixPkg/releases) `AptioFix-R27-RELEASE.zip`
+* `AptioMemoryFix.efi` from [acidanthera/AptioFixPkg](https://github.com/acidanthera/AptioFixPkg/releases) `AptioFix-R27-RELEASE.zip`
+* `ApfsDriverLoader.efi` from [acidanthera/AppleSupportPkg](https://github.com/acidanthera/AppleSupportPkg) `AppleSupport-v2.0.8-RELEASE.zip`
+* `AppleUiSupport.efi` from [acidanthera/AppleSupportPkg](https://github.com/acidanthera/AppleSupportPkg) `AppleSupport-v2.0.8-RELEASE.zip`
+
+> Regarding `AptioInputFix.efi` and `AptioMemoryFix.efi` these are being used in [XiaoMi-Pro-Hackintosh](https://github.com/daliansky/XiaoMi-Pro-Hackintosh) and it noted in [Which OsxAptioFixDrv (1, 2, or 3) do I use for my Coffee Lake hack?](https://www.reddit.com/r/hackintosh/comments/7r752l/which_osxaptiofixdrv_1_2_or_3_do_i_use_for_my/) that 'Probably also worthwhile to look at vit9696's AptioFixPkg as well, as that's made some serious progress toward native NVRAM on Skylake+ hardware (among other things).'
+
+> Regarding `ApfsDriverLoader.efi` and `AppleUiSupport.efi` these are being used in [XiaoMi-Pro-Hackintosh](https://github.com/daliansky/XiaoMi-Pro-Hackintosh) and it noted in [Possible to get FileVault boot drive encryption working on old MSI P67A-C45 motherboard Intel P67 chipset?](https://www.reddit.com/r/hackintosh/comments/a5yxl9/possible_to_get_filevault_boot_drive_encryption/) that 'OsxAptioFixDrv/etc are general drivers that fix a variety of Aptio issues when booting macOS; FileVault is out of their scope (they mainly fix memory mapping issues that prevent boot.efi from loading the kernel). Unless you are running TianoCore-based FW or something special, you will always need some driver for fixing Aptio issues. For a general Aptio firmware fix, just use AptioMemoryFix. There is no point in using anything else (especially on older hardware). You should also use the latest Clover (who knows how old UniBeast's version is).For FV2 support, you need AppleUiSupport from AppleSupportPkg and an input driver. For input, you should either use AptioInputFix (part of AptioFixPkg or UsbKbDxe (also from AppleSupportPkg; you may need additional workarounds to disconnect existing USB keyboard drivers; here is a build with this workaround enabled).'
+
+* `HFSPlus.efi` *from an external source*
+* `VirtualSmc.efi` *from VirtualSMC (1.0.6)*
 
 *Clover for UEFI booting only*, *Install Clover in the ESP*
 
-*UEFI Drivers* / `drivers64UEFI`:
+*UEFI Drivers* / *Reccomended Drivers*:
 
-* `ApfsDriverLoader-64.efi`
-* `AppleImageLoader-64.efi`
-* `AptioMemoryFix-64.efi`
-* `DataHubDxe-64.efi`
-* `FSInject-64.efi`
-* `HFSPlus.efi` *from an external source*
-* `VirtualSmc.efi` *from VirtualSMC (1.0.2)*
+* `AudioDxe.efi`
+* `DataHubDxe.efi`
+* `FSInject.efi.efi`
 
 *FileVault 2 UEFI Drivers* / `drivers64UEFI`:
 
-* `AppleKeyFeeder-64.efi`
-* `AppleUISupport-64.efi`
-* `AptioInputFix-64.efi`
+* `AppleKeyFeeder.efi`
 
 *Install Clover Preference Pane*
 
@@ -284,21 +298,6 @@ In general I prefer the Clover Configurator although it it not reccomended
     <key>Replace</key> <data>WERTTQ==</data>
 </dict>
 <dict>
-    <key>Comment</key> <string>change HDAS to HDEF</string>
-    <key>Find</key> <data>SERBUw==</data>
-    <key>Replace</key> <data>SERFRg==</data>
-</dict>
-<dict>
-    <key>Comment</key> <string>change HECI to IMEI</string>
-    <key>Find</key> <data>SEVDSQ==</data>
-    <key>Replace</key> <data>SU1FSQ==</data>
-</dict>
-<dict>
-    <key>Comment</key> <string>change GFX0 to IGPU</string>
-    <key>Find</key> <data>R0ZYMA==</data>
-    <key>Replace</key> <data>SUdQVQ==</data>
-</dict>
-<dict>
     <key>Comment</key> <string>change SAT0 to SATA (SSDT-SMBUS.dsl)</string>
     <key>Find</key> <data>U0FUMA==</data>
     <key>Replace</key> <data>U0FUQQ==</data>
@@ -316,6 +315,33 @@ In general I prefer the Clover Configurator although it it not reccomended
 </array>
 ```
 
+**July 2019**: The following have been retired since WhatEverGreen is doing them [Intel® HD Graphics FAQ](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.IntelHD.en.md)
+
+```xml
+<dict>
+    <key>Disabled</key>
+    <true/>
+    <key>Comment</key> <string>change HDAS to HDEF</string>
+    <key>Find</key> <data>SERBUw==</data>
+    <key>Replace</key> <data>SERFRg==</data>
+</dict>
+<dict>
+    <key>Disabled</key>
+    <true/>
+    <key>Comment</key> <string>change HECI to IMEI</string>
+    <key>Find</key> <data>SEVDSQ==</data>
+    <key>Replace</key> <data>SU1FSQ==</data>
+</dict>
+<dict>
+    <key>Disabled</key>
+    <true/>
+    <key>Comment</key> <string>change GFX0 to IGPU</string>
+    <key>Find</key> <data>R0ZYMA==</data>
+    <key>Replace</key> <data>SUdQVQ==</data>
+</dict>
+```
+
+
 * `DropTables > Signature > DMAR`
 
 * `SSDT > DropOem > No`
@@ -325,7 +351,7 @@ In general I prefer the Clover Configurator although it it not reccomended
 ## `ACPI`
 [up up up](#)
 
-* `Arguments > -liludbg -wegdbg -igfxdump -igfxfbdump dart=0 -igfxnohdmi igfxrst=1 agdpmod=vit9696 -cdfon -v` *for Lilu/WhateverGreen debugging*
+* `Arguments > -liludbg -wegdbg -igfxdump -igfxfbdump dart=0 -igfxnohdmi gfxrst=1 agdpmod=vit9696 -cdfon -v` *for Lilu/WhateverGreen debugging*
 * `Arguments > dart=0 -igfxnohdmi igfxrst=1 agdpmod=vit9696 -cdfon -v`
 * `DefaultVolume > LastBootedVolume`
 * `HibernationFixup > YES`
@@ -357,7 +383,7 @@ In general I prefer the Clover Configurator although it it not reccomended
 <key>PciRoot(0x0)/Pci(0x1f,0x3)</key>
 <dict>
    <key>AAPL,slot-name</key>
-   <string>PCI-Express</string>
+   <string>Internal</string>
    <key>hda-gfx</key>
    <string>onboard-1</string>
    <key>hda-idle-support</key>
@@ -376,6 +402,8 @@ In general I prefer the Clover Configurator although it it not reccomended
 <dict>
     <key>AAPL,ig-platform-id</key>
     <data>AAASGQ==</data>
+    <key>AAPL,slot-name</key>
+    <string>Internal</string>
     <key>device-id</key>
     <data>EhkAAA==</data>
     <key>framebuffer-con0-busid</key>
@@ -416,6 +444,85 @@ In general I prefer the Clover Configurator although it it not reccomended
     <data>AQAAAA==</data>
     <key>framebuffer-patch-enable</key>
     <data>AQAAAA==</data>
+    <key>hda-gfx</key>
+    <string>onboard-1</string>
+</dict>
+```
+
+additional devices have been added from the Hackingtool/PCItab and exported
+
+```xml
+<key>PciRoot(0x0)/Pci(0x0,0x0)</key>
+<dict>
+    <key>AAPL,slot-name</key>
+    <string>Internal</string>
+    <key>device_type</key>
+    <string>Host bridge</string>
+    <key>model</key>
+    <string>Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers</string>
+</dict>
+<key>PciRoot(0x0)/Pci(0x14,0x0)</key>
+<dict>
+    <key>AAPL,slot-name</key>
+    <string>Internal</string>
+    <key>device_type</key>
+    <string>USB controller</string>
+    <key>model</key>
+    <string>100 Series/C230 Series Chipset Family USB 3.0 xHCI Controller</string>
+</dict>
+<key>PciRoot(0x0)/Pci(0x14,0x2)</key>
+<dict>
+    <key>AAPL,slot-name</key>
+    <string>Internal</string>
+    <key>device_type</key>
+    <string>Signal processing controller</string>
+    <key>model</key>
+    <string>100 Series/C230 Series Chipset Family Thermal Subsystem</string>
+</dict>
+<key>PciRoot(0x0)/Pci(0x17,0x0)</key>
+<dict>
+    <key>AAPL,slot-name</key>
+    <string>Internal</string>
+    <key>device_type</key>
+    <string>SATA controller</string>
+    <key>model</key>
+    <string>Q170/Q150/B150/H170/H110/Z170/CM236 Chipset SATA Controller [AHCI Mode]</string>
+</dict>
+<key>PciRoot(0x0)/Pci(0x1f,0x0)</key>
+<dict>
+    <key>AAPL,slot-name</key>
+    <string>Internal</string>
+    <key>device_type</key>
+    <string>ISA bridge</string>
+    <key>model</key>
+    <string>Q170 Chipset LPC/eSPI Controller</string>
+</dict>
+<key>PciRoot(0x0)/Pci(0x1f,0x2)</key>
+<dict>
+    <key>AAPL,slot-name</key>
+    <string>Internal</string>
+    <key>device_type</key>
+    <string>Memory controller</string>
+    <key>model</key>
+    <string>100 Series/C230 Series Chipset Family Power Management Controller</string>
+</dict>
+<key>PciRoot(0x0)/Pci(0x1f,0x4)</key>
+<dict>
+    <key>AAPL,slot-name</key>
+    <string>Internal</string>
+    <key>device_type</key>
+    <string>SMBus</string>
+    <key>model</key>
+    <string>100 Series/C230 Series Chipset Family SMBus</string>
+</dict>
+<key>PciRoot(0x0)/Pci(0x1f,0x6)</key>
+<dict>
+    <key>AAPL,slot-name</key>
+    <string>Internal</string>
+    <key>device_type</key>
+    <string>Ethernet controller</string>
+    <key>model</key>
+    <string>Ethernet Connection (2) I219-LM</string>
 </dict>
 ```
 
@@ -601,13 +708,13 @@ If placed kexts on `EFI/CLOVER/kexts/Other` then:
 
 used 
 
-* `Clover_v2.4k_r4701.RM-4963.ca6cca7c.zip` - `Rehabman's Fork`
-* `as.vit9696.VirtualSMC (1.0.2)`  - `VirtualSMC.1.0.2.RELEASE.zip` **use only main kext**
+* `Clover_v2.5k_r5018.zip` - `From Official Site`
+* `as.vit9696.VirtualSMC (1.0.6)`  - `VirtualSMC.1.0.6.RELEASE.zip` **use only main kext**
 * `com.rehabman.driver.ACPIDebug (0.1.4)` - `RehabMan-Debug-2015-1230.zip`
-* `as.vit9696.Lilu (1.3.1)` - `Lilu.1.3.1.RELEASE.zip`
-* `as.vit9696.WhateverGreen (1.2.6)` - `WhateverGreen.1.2.6.RELEASE.zip`
-* `as.lvs1974.HibernationFixup (1.2.4)` - `HibernationFixup.1.2.4.RELEASE.zip`
-* `as.vit9696.AppleALC (1.3.4)` - `AppleALC.1.3.4.RELEASE.zip`
+* `as.vit9696.Lilu (1.3.7)` - `Lilu.1.3.7.RELEASE.zip`
+* `as.vit9696.WhateverGreen (1.3.0)` - `WhateverGreen.1.3.0.RELEASE.zip`
+* `as.lvs1974.HibernationFixup (1.2.6)` - `HibernationFixup.1.2.6.RELEASE.zip`
+* `as.vit9696.AppleALC (1.3.9)` - `AppleALC.1.3.9.RELEASE.zip`
 * `org.tw.CodecCommander (2.7.1)` - `RehabMan-CodecCommander-2018-1003.zip`
 * `com.insanelymac.IntelMausiEthernet (2.4.1d1)` - `RehabMan-IntelMausiEthernet-v2-2018-1031.zip`
 * `AppleIntelInfo.kext` - [Replacement for AppleIntelCPUPowerManagementInfo.kext](https://github.com/Piker-Alpha/AppleIntelInfo)
