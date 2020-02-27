@@ -22,7 +22,9 @@
 - [DSDT patching \(retired patches\)](#dsdt-patching-retired-patches)
     - [~~`patches.elitedesk800/SSDT-EC.dsl`~~](#%7E%7Epatcheselitedesk800ssdt-ecdsl%7E%7E)
     - [~~`patches.elitedesk800/SSDT-USBX.dsl`~~](#%7E%7Epatcheselitedesk800ssdt-usbxdsl%7E%7E)
-- [`Clover installation`](#clover-installation)
+    - [~~`patches.elitedesk800/SSDT-UIAC.dsl`~~](#%7E%7Epatcheselitedesk800ssdt-uiacdsl%7E%7E)
+- [`Clover installation (before Catalina)`](#clover-installation-before-catalina)
+- [`Clover installation` **February 2020 / Catalina**](#clover-installation-february-2020--catalina)
 - [`Clover Config`](#clover-config)
     - [`ACPI`](#acpi)
     - [`ACPI`](#acpi-1)
@@ -68,7 +70,7 @@ hardware configuration with the following specs:
 * 32GB DDR4 2133 DIMM (Dual-Channel Unknown @ 1064MHz (15-15-15-36))
 * Audio: Realtek ALC 221 Audio (revision 0x100103)
 * Network: Intel® I219LM Gigabit Network Connection LOM
-* 250GB SanDisk SD7SB3Q-256G-1006 (SSD)
+* 500GB Samsung V-NAND SSD 860 EVO MZ-76E500 (Model Code: MZ-76E500B/EU)
 * 1000GB Seagate Barracuda 7200.14 ST1000DM003-1SB102 (SATA)
 * 1000GB Western Digital Caviar Green WDC WD10EAVS-14M4B0 (SATA)
 * display1: HP EliteDisplay E242
@@ -99,6 +101,10 @@ patches:
 * `$HACK/wks/sources/elitedeks800.baseline.20190104.zip` *EliteDesk-800 working hackintosh EFI and kexts on December 2018 10.13.x and initial tries in 10.14.x*
 * `$HACK/wks/sources/elitedeks800.debug.20181117.zip` *EliteDesk-800 working hackintosh EFI and kexts on November 2018 10.13.x*
 * `$HACK/wks/sources/SP90164.BIOS.N01.236.zip` *Bios 2.36*
+* `$HACK/air/sources/miguel41.EFI.catalina.zip` *EFI from tonymac supporting catalina*
+* `$HACK/air/sources/OcQuirks Rev 15 - Designare Z390.zip` *Provider for CLOVER/drivers/UEFI*
+* `$HACK/air/sources/Catalina Fresh Install.zip` *Provider for CLOVER/drivers/UEFI*
+* `$HACK/air/sources/AppleSupport-2.0.9-RELEASE.zip` *Provider for CLOVER/drivers/UEFI FileVault*
 * `$HACK/wks/sources/kexts` *updated list with source kexts used*
 * `$HACK/wks/release` *the latest released files*
 
@@ -222,7 +228,20 @@ according to this [article](https://www.tonymacx86.com/threads/guide-usb-power-p
 
 This has the `USBX` device for the power injection according to the [article](https://www.tonymacx86.com/threads/guide-usb-power-property-injection-for-sierra-and-later.222266/) 
 
-# `Clover installation`
+## ~~`patches.elitedesk800/SSDT-UIAC.dsl`~~
+[up up up](#)
+
+**February 2019**: This is done now using the codeless kext `USBPorts.kext` produced from the Hackingtool
+
+The following ports are **disabled** . Check [SSDT-UIAC.dsl](patches.elitedesk800/SSDT-UIAC.dsl) for more information on patching
+
+* USB back, bottom row, 1rst from left
+* USB back, bottom row, 2nd from left
+* USB back, bottom row, 3rd from left
+* USB back, bottom row, 4rth from left
+
+
+# `Clover installation (before Catalina)`
 [up up up](#)
 
 ~~I have read in many places including [here](https://www.tonymacx86.com/threads/guide-hp-elite-8300-hp-6300-pro-using-clover-uefi-hotpatch.265384/) that RehabMan's clover fork is more stable so this is the one we are going to use.~~ **July 2019 update:** I switched to latest official all other repositories have being doing this
@@ -247,13 +266,51 @@ Regarding the drivers used some of them where from the clover distribution and s
 
 * `AudioDxe.efi`
 * `DataHubDxe.efi`
-* `FSInject.efi.efi`
+* `FSInject.efi`
 
-*FileVault 2 UEFI Drivers* / `drivers64UEFI`:
+*UEFI Drivers* / *FileVault 2 UEFI Drivers* :
 
 * `AppleKeyFeeder.efi`
 
 *Install Clover Preference Pane*
+
+> make sure that in `EFI/CLOVER/drivers/UEFI` you have only the following files: `AppleKeyFeeder.efi`, `AudioDxe.efi`, `DataHubDxe.efi`, `FSInject.efi`. Erase the rest (Clover installer sometimes installs other dependencies)
+
+# `Clover installation` **February 2020 / Catalina**
+[up up up](#)
+
+Run `Clover_v2.5k_r5103` installer:
+
+*Continue* > *Continue* > *Change Install Location* > *Install macOS Catalina* > *Customize*
+
+*Clover for UEFI booting only*, *Install Clover in the ESP*
+
+*Install RC scripts on target volume* **Only on the hard disk for NVRAM emulation**
+
+*Install Clover Preference Pane* **Only on the hard disk**
+
+> Create `EFI/CLOVER/drivers/UEFI` or Erase all files in `EFI/CLOVER/drivers/UEFI` if exitsts and copy the ones from the release directory
+
+`EFI/CLOVER/drivers/UEFI` will have the following:
+
+* ApfsDriverLoader.efi
+* AppleGenericInput.efi
+* AppleUiSupport.efi
+* AudioDxe.efi
+* EmuVariableUefi.efi
+* FwRuntimeServices.efi
+* HFSPlus.efi
+* OcQuirks.efi
+* OcQuirks.plist
+* UsbKbDxe.efi
+* UsbMouseDxe.efi
+* VirtualSmc.efi
+
+These files come from:
+
+* [Designare Z390](https://www.tonymacx86.com/threads/success-gigabyte-designare-z390-thunderbolt-3-i7-9700k-amd-rx-580.267551/page-1131#post-2046300). Use the `OcQuirks Rev 15 - Designare Z390.zip` and `Catalina Fresh Install.zip`
+* [Filevault](https://fewtarius.gitbook.io/laptopguide/extras/enabling-filevault). Use the `AppleSupport-2.0.9-RELEASE.zip`
+
 
 # `Clover Config`
 [up up up](#)
@@ -708,7 +765,7 @@ If placed kexts on `EFI/CLOVER/kexts/Other` then:
 
 used 
 
-* `Clover_v2.5k_r5018.zip` - `From Official Site`
+* `Clover_v2.5k_r50103.pkg` - `From Official Site`
 * `as.vit9696.VirtualSMC (1.0.6)`  - `VirtualSMC.1.0.6.RELEASE.zip` **use only main kext**
 * `com.rehabman.driver.ACPIDebug (0.1.4)` - `RehabMan-Debug-2015-1230.zip`
 * `as.vit9696.Lilu (1.3.7)` - `Lilu.1.3.7.RELEASE.zip`
@@ -716,12 +773,28 @@ used
 * `as.lvs1974.HibernationFixup (1.2.6)` - `HibernationFixup.1.2.6.RELEASE.zip`
 * `as.vit9696.AppleALC (1.3.9)` - `AppleALC.1.3.9.RELEASE.zip`
 * `org.tw.CodecCommander (2.7.1)` - `RehabMan-CodecCommander-2018-1003.zip`
-* `com.insanelymac.IntelMausiEthernet (2.4.1d1)` - `RehabMan-IntelMausiEthernet-v2-2018-1031.zip`
 * `AppleIntelInfo.kext` - [Replacement for AppleIntelCPUPowerManagementInfo.kext](https://github.com/Piker-Alpha/AppleIntelInfo)
 * `SATA-unsupported.kext` *from [RehabMan/hack-tools](https://github.com/RehabMan/hack-tools/tree/master/kexts)*
 * `LiluFriend.kext` - `LiluFriend.1.1.0.RELEASE.zip`
 * `LiluFriendLite.kext` - *from [RehabMan/hack-tools](https://github.com/RehabMan/hack-tools/tree/master/template_kexts)*
 * `com.rehabman.driver.USBInjectAll (0.7.1)` - `RehabMan-USBInjectAll-2018-1108.zip`
+
+* `Clover_v2.5k_r50103.pkg` - `From [Github](https://github.com/CloverHackyColor/CloverBootloader/releases) Site`
+* `as.vit9696.VirtualSMC (1.0.9)`  - `VirtualSMC-1.0.9-RELEASE.zip` **used VirtualSMC.kext and SMCBatteryManager.kext**
+* `com.rehabman.driver.ACPIDebug (0.1.4)` - `RehabMan-Debug-2015-1230.zip`
+* `s.vit9696.Lilu (1.4.1)` - `Lilu-1.4.1-RELEASE.zip`
+* `as.vit9696.WhateverGreen (1.3.6)` - `WhateverGreen-1.3.6-RELEASE.zip`
+* `as.lvs1974.HibernationFixup (1.3.2)` - `HibernationFixup-1.3.2-RELEASE.zip`
+* `as.vit9696.AppleALC (1.4.6)` - `AppleALC-1.4.6-RELEASE.zip`
+* `org.tw.CodecCommander (2.7.1)` - `RehabMan-CodecCommander-2018-1003.zip`
+* ~~`com.insanelymac.IntelMausiEthernet (2.4.1d1)` - `RehabMan-IntelMausiEthernet-v2-2018-1031.zip`~~
+* `as.acidanthera.mieze.IntelMausi (1.0.2)` -- `IntelMausi-1.0.2-RELEASE.zip`
+* `AppleIntelInfo.kext` - [Replacement for AppleIntelCPUPowerManagementInfo.kext](https://github.com/Piker-Alpha/AppleIntelInfo)
+* `SATA-unsupported.kext` *from [RehabMan/hack-tools](https://github.com/RehabMan/hack-tools/tree/master/kexts)*
+* `USBPorts.kext` created with [FB-Patcher](https://www.insanelymac.com/forum/topic/335018-intel-fb-patcher-v168/) very similar to the procedure from Rehabman's USBInjectAll
+* `LiluFriend.kext` - `LiluFriend.1.1.0.RELEASE.zip`
+* `LiluFriendLite.kext` - `LiluFriendLite.kext.zip`
+* ~~`com.rehabman.driver.USBInjectAll (0.7.1)` - `RehabMan-USBInjectAll-2018-1108.zip`~~
 
 ## Power Management
 [up up up](#)
@@ -809,6 +882,102 @@ sudo cat /tmp/AppleIntelInfo.dat
 
 # Check disks with `smartclt`
 [up up up](#)
+
+**500GB Samsung V-NAND SSD 860 EVO MZ-76E500 (Model Code: MZ-76E500B/EU)**
+
+```shell_session
+$ smartctl -a disk1
+smartctl 7.1 2019-12-30 r5022 [Darwin 19.3.0 x86_64] (local build)
+Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Model Family:     Samsung based SSDs
+Device Model:     Samsung SSD 860 EVO 500GB
+Serial Number:    S4XBNF0M837946E
+LU WWN Device Id: 5 002538 e4984a61c
+Firmware Version: RVT03B6Q
+User Capacity:    500,107,862,016 bytes [500 GB]
+Sector Size:      512 bytes logical/physical
+Rotation Rate:    Solid State Device
+Form Factor:      2.5 inches
+Device is:        In smartctl database [for details use: -P show]
+ATA Version is:   ACS-4 T13/BSR INCITS 529 revision 5
+SATA Version is:  SATA 3.2, 6.0 Gb/s (current: 6.0 Gb/s)
+Local Time is:    Thu Feb 27 11:04:28 2020 EET
+SMART support is: Available - device has SMART capability.
+SMART support is: Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART overall-health self-assessment test result: PASSED
+
+General SMART Values:
+Offline data collection status:  (0x00) Offline data collection activity
+                    was never started.
+                    Auto Offline Data Collection: Disabled.
+Self-test execution status:      (   0) The previous self-test routine completed
+                    without error or no self-test has ever
+                    been run.
+Total time to complete Offline
+data collection:        (    0) seconds.
+Offline data collection
+capabilities:            (0x53) SMART execute Offline immediate.
+                    Auto Offline data collection on/off support.
+                    Suspend Offline collection upon new
+                    command.
+                    No Offline surface scan supported.
+                    Self-test supported.
+                    No Conveyance Self-test supported.
+                    Selective Self-test supported.
+SMART capabilities:            (0x0003) Saves SMART data before entering
+                    power-saving mode.
+                    Supports SMART auto save timer.
+Error logging capability:        (0x01) Error logging supported.
+                    General Purpose Logging supported.
+Short self-test routine
+recommended polling time:    (   2) minutes.
+Extended self-test routine
+recommended polling time:    (  85) minutes.
+SCT capabilities:          (0x003d) SCT Status supported.
+                    SCT Error Recovery Control supported.
+                    SCT Feature Control supported.
+                    SCT Data Table supported.
+
+SMART Attributes Data Structure revision number: 1
+Vendor Specific SMART Attributes with Thresholds:
+ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE
+  5 Reallocated_Sector_Ct   0x0033   100   100   010    Pre-fail  Always       -       0
+  9 Power_On_Hours          0x0032   099   099   000    Old_age   Always       -       74
+ 12 Power_Cycle_Count       0x0032   099   099   000    Old_age   Always       -       11
+177 Wear_Leveling_Count     0x0013   100   100   000    Pre-fail  Always       -       0
+179 Used_Rsvd_Blk_Cnt_Tot   0x0013   100   100   010    Pre-fail  Always       -       0
+181 Program_Fail_Cnt_Total  0x0032   100   100   010    Old_age   Always       -       0
+182 Erase_Fail_Count_Total  0x0032   100   100   010    Old_age   Always       -       0
+183 Runtime_Bad_Block       0x0013   100   100   010    Pre-fail  Always       -       0
+187 Uncorrectable_Error_Cnt 0x0032   100   100   000    Old_age   Always       -       0
+190 Airflow_Temperature_Cel 0x0032   070   058   000    Old_age   Always       -       30
+195 ECC_Error_Rate          0x001a   200   200   000    Old_age   Always       -       0
+199 CRC_Error_Count         0x003e   100   100   000    Old_age   Always       -       0
+235 POR_Recovery_Count      0x0012   099   099   000    Old_age   Always       -       1
+241 Total_LBAs_Written      0x0032   099   099   000    Old_age   Always       -       590175738
+
+SMART Error Log Version: 1
+No Errors Logged
+
+SMART Self-test log structure revision number 1
+No self-tests have been logged.  [To run self-tests, use: smartctl -t]
+
+SMART Selective self-test log data structure revision number 1
+ SPAN  MIN_LBA  MAX_LBA  CURRENT_TEST_STATUS
+    1        0        0  Not_testing
+    2        0        0  Not_testing
+    3        0        0  Not_testing
+    4        0        0  Not_testing
+    5        0        0  Not_testing
+  256        0    65535  Read_scanning was never started
+Selective self-test flags (0x0):
+  After scanning selected spans, do NOT read-scan remainder of disk.
+If Selective self-test is pending on power-up, resume after 0 minute delay.
+```
 
 **SanDisk SD7SB3Q-256G-1006**
 
