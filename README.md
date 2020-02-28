@@ -44,6 +44,7 @@ Hackintosh your HP EliteDesk 800 G2 Tower PC Skylake. This is intented to create
 - [Benchmarking](#benchmarking)
 	- [Benchmarking Windows 10](#benchmarking-windows-10)
 	- [Benchmarking macOS 10.14.2](#benchmarking-macos-10142)
+	- [Benchmarking macOS 10.15.3](#benchmarking-macos-10153)
 - [Patching Information](#patching-information)
 	- [CPU](#cpu)
 	- [Audio](#audio)
@@ -269,7 +270,7 @@ BIOS Settings:
 
 Download Catalina from Apple AppStore and run the following command to install it on the USB disk you just Erased.
 
-`$ sudo /Applications/Install macOS Catalina.app/Contents/Resources/createinstallmedia" --volume /Volumes/USB`
+`$ sudo /Applications/Install macOS Catalina.app/Contents/Resources/createinstallmedia --volume /Volumes/USB`
 
 ### Install `Clover` to the USB Flash Drive
 [up up up](#)
@@ -479,17 +480,32 @@ sudo pmset -a autopoweroff 0
 ### Benchmarking macOS 10.14.2
 [up up up](#)
 
-* `GeekBench x64 4.3.2 CPU` 44903/16686
-* `GeekBench x64 4.3.2 GPU/OpenCl` 22007
+* `GeekBench x64 4.3.2 CPU` 4490/16686
+* `GeekBench x64 4.3.2 GPU/OpenCl` 32007
 * `GeekBench x64 4.3.2 GPU/Metal` 23400
 * `CINEBENCH R15.038_RC184115 OpenGL` 29.91fps
 * `CINEBENCH R15.038_RC184115 CPU` 810cb
 * `LuxMark-v3.1 OpenCL GPU` 2141
 * `LuxMark-v3.1 OpenCL CPU` 1773
-* `Heaven FPS` 13.2 `Score`332 `Min FPS` 9.6 `Max FPS` 26.1
+* `Heaven FPS` 13.2 `Score` 332 `Min FPS` 9.6 `Max FPS` 26.1
 * `AJA System Test Lite SanDisk (with trim) SanDisk SD7SB3Q-256G-1006:` 217MB/sec write, 400MB/sec read
 * `AJA System Test Lite Seagate Barracuda 7200.14 ST1000DM003-1SB102:` 140MB/sec write, 161MB/sec read
 * `AJA System Test Lite Western Digital Caviar Green WDC WD10EAVS-14M4B0:` 84MB/sec write, 91MB/sec read
+
+### Benchmarking macOS 10.15.3
+[up up up](#)
+
+* `GeekBench x64 4.3.2 CPU` 4824/16966
+* `GeekBench x64 4.3.2 GPU/OpenCl` 32249
+* `GeekBench x64 4.3.2 GPU/Metal` 23928
+* `CINEBENCH R15.038_RC184115 OpenGL` 30.46fps
+* `CINEBENCH R15.038_RC184115 CPU` 760cb
+* `LuxMark-v3.1 OpenCL GPU` 2240
+* `LuxMark-v3.1 OpenCL CPU` 1914
+* `Heaven FPS` 12.9 `Score` 324 `Min FPS` 8.9 `Max FPS` 20.8 (fullscreen/Quality:Medium/Tessellation:Disabled/Anti-aliasing:off/Stereo3D:Disabled)
+* `AJA System Test Lite SanDisk (with trim) Samsung 860 EVO MZ-76E500B/EU:` 491MB/sec write, 522MB/sec read
+* `AJA System Test Lite Seagate Barracuda 7200.14 ST1000DM003-1SB102:` 122MB/sec write, 130MB/sec read
+* `AJA System Test Lite Western Digital Caviar Green WDC WD10EAVS-14M4B0:` 61MB/sec write, 70MB/sec read
 
 ## Patching Information
 [up up up](#)
