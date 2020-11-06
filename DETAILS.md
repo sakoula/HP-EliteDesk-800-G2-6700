@@ -8,37 +8,45 @@
 - [directory structure](#directory-structure)
 - [2.36 Bios Update](#236-bios-update)
 - [DSDT patching \(active patches\)](#dsdt-patching-active-patches)
-    - [`DSDT.dsl`](#dsdtdsl)
-    - [`patches.elitedesk800/SSDT-XOSI.dsl`](#patcheselitedesk800ssdt-xosidsl)
-    - [`patches.elitedesk800/SSDT-RMCF.dsl`](#patcheselitedesk800ssdt-rmcfdsl)
-    - [`patches.elitedesk800/SSDT-PTSWAK.dsl`](#patcheselitedesk800ssdt-ptswakdsl)
-    - [`patches.elitedesk800/SSDT-GPRW.dsl`](#patcheselitedesk800ssdt-gprwdsl)
-    - [`patches.elitedesk800/SSDT-RMDT.dsl`](#patcheselitedesk800ssdt-rmdtdsl)
-    - [`patches.elitedesk800/SSDT-DMAC.dsl`](#patcheselitedesk800ssdt-dmacdsl)
-    - [`patches.elitedesk800/SSDT-HPET.dsl`](#patcheselitedesk800ssdt-hpetdsl)
-    - [`patches.elitedesk800/SSDT-MEM2.dsl`](#patcheselitedesk800ssdt-mem2dsl)
-    - [`patches.elitedesk800/SSDT-PMCR.dsl`](#patcheselitedesk800ssdt-pmcrdsl)
-    - [`patches.elitedesk800/SSDT-LPC.dsl`](#patcheselitedesk800ssdt-lpcdsl)
+    - [`patches.elitedesk800.opencore/SSDT-PLUG.dsl`](#patcheselitedesk800opencoressdt-plugdsl)
+    - [`patches.elitedesk800.opencore/SSDT-EC-USBX.dsl`](#patcheselitedesk800opencoressdt-ec-usbxdsl)
+    - [`patches.elitedesk800.opencore/SSDT-HPET.dsl` + OC patches](#patcheselitedesk800opencoressdt-hpetdsl--oc-patches)
+    - [`patches.elitedesk800.opencore/SSDT-SBUS-MCHC.dsl`](#patcheselitedesk800opencoressdt-sbus-mchcdsl)
+    - [`patches.elitedesk800.opencore/SSDT-USBX.dsl`](#patcheselitedesk800opencoressdt-usbxdsl)
 - [DSDT patching \(retired patches\)](#dsdt-patching-retired-patches)
-    - [~~`patches.elitedesk800/SSDT-EC.dsl`~~](#%7E%7Epatcheselitedesk800ssdt-ecdsl%7E%7E)
-    - [~~`patches.elitedesk800/SSDT-USBX.dsl`~~](#%7E%7Epatcheselitedesk800ssdt-usbxdsl%7E%7E)
-    - [~~`patches.elitedesk800/SSDT-UIAC.dsl`~~](#%7E%7Epatcheselitedesk800ssdt-uiacdsl%7E%7E)
-- [`Clover installation (before Catalina)`](#clover-installation-before-catalina)
-- [`Clover installation` **February 2020 / Catalina**](#clover-installation-february-2020--catalina)
-- [`Clover Config`](#clover-config)
-    - [`ACPI`](#acpi)
-    - [`ACPI`](#acpi-1)
-    - [`CPU`](#cpu)
-    - [`Devices`](#devices)
-    - [`GUI`](#gui)
-    - [`Graphics`](#graphics)
-    - [`KernelAndKextPatches`](#kernelandkextpatches)
-    - [`RtVariables`](#rtvariables)
-    - [`SMBIOS`](#smbios)
-    - [`SystemParameters`](#systemparameters)
+    - [~~`DSDT.dsl`~~](#%7E%7Edsdtdsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-XOSI.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-xosidsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-RMCF.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-rmcfdsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-PTSWAK.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-ptswakdsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-GPRW.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-gprwdsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-RMDT.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-rmdtdsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-DMAC.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-dmacdsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-HPET.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-hpetdsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-MEM2.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-mem2dsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-PMCR.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-pmcrdsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-LPC.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-lpcdsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-EC.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-ecdsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-USBX.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-usbxdsl%7E%7E)
+    - [~~`patches.elitedesk800.clover/SSDT-UIAC.dsl`~~](#%7E%7Epatcheselitedesk800cloverssdt-uiacdsl%7E%7E)
+- [`config.plist`](#configplist)
+    - [ACPI](#acpi)
+    - [Booter](#booter)
+    - [DeviceProperties](#deviceproperties)
+    - [Kernel](#kernel)
+    - [Misc](#misc)
+    - [NVRAM](#nvram)
+    - [PlatformInfo](#platforminfo)
+    - [UEFI](#uefi)
+    - [OpenCore beauty treatment](#opencore-beauty-treatment)
+- [How to Debug](#how-to-debug)
+- [RTC problems](#rtc-problems)
+- [TRIM on SSDs](#trim-on-ssds)
+- [Audio](#audio)
+- [Ethernet](#ethernet)
+        - [Graphics](#graphics)
+- [USB Mapping](#usb-mapping)
 - [`kexts`](#kexts)
-    - [Power Management](#power-management)
-    - [`AppleIntelInfo.kext`](#appleintelinfokext)
+- [Power Management](#power-management)
 - [Check disks with `smartclt`](#check-disks-with-smartclt)
 - [`patches.elitedesk800` DSDT hotpatches](#patcheselitedesk800-dsdt-hotpatches)
 
@@ -90,23 +98,9 @@ readme:
 * `$HACK/wks/CHANGELOG.md` *github changelog*
 * `$HACK/wks/ENVIRONMENT.wks.md` *my environment to work with hackintoshes*
 
-
 patches:
 
-* `$HACK/wks/patches.elitedesk800` work in progress directory with all required patches for EliteDesk-800: *DSDT.DSL, SSDT\*.DSL, hotfixes, config.plist*
-
-`$HACK/wks/sources`:
-
-* `$HACK/wks/sources/ACPI.hp.bios.2.36.zip` *ACPI tables from 2.36 BIOS extracted using Clover F4*
-* `$HACK/wks/sources/elitedeks800.baseline.20190104.zip` *EliteDesk-800 working hackintosh EFI and kexts on December 2018 10.13.x and initial tries in 10.14.x*
-* `$HACK/wks/sources/elitedeks800.debug.20181117.zip` *EliteDesk-800 working hackintosh EFI and kexts on November 2018 10.13.x*
-* `$HACK/wks/sources/SP90164.BIOS.N01.236.zip` *Bios 2.36*
-* `$HACK/air/sources/miguel41.EFI.catalina.zip` *EFI from tonymac supporting catalina*
-* `$HACK/air/sources/OcQuirks Rev 15 - Designare Z390.zip` *Provider for CLOVER/drivers/UEFI*
-* `$HACK/air/sources/Catalina Fresh Install.zip` *Provider for CLOVER/drivers/UEFI*
-* `$HACK/air/sources/AppleSupport-2.0.9-RELEASE.zip` *Provider for CLOVER/drivers/UEFI FileVault*
-* `$HACK/wks/sources/kexts` *updated list with source kexts used*
-* `$HACK/wks/release` *the latest released files*
+* `$HACK/wks/patches.elitedesk800.opencore` work in progress directory with all required patches for EliteDesk-800: *DSDT.DSL, SSDT\*.DSL, hotfixes, config.plist*
 
 # 2.36 Bios Update
 [up up up](#)
@@ -120,15 +114,214 @@ I downloaded the 2.36 Bios from [HP](http://support.hp.com/us-en/product/hp-elit
 # DSDT patching (active patches)
 [up up up](#)
 
-## `DSDT.dsl` 
+## `patches.elitedesk800.opencore/SSDT-PLUG.dsl`
 [up up up](#)
 
-open with MaciASL the `patches.elitedesk800/DSDT.dsl`. In the preferences use the `ACPI 6.2a` and try to compile. If you have only warnings you are good to proceed. 
+[Fixing Power Management (SSDT-PLUG)](https://dortania.github.io/Getting-Started-With-ACPI/Universal/plug.html)
+
+## `patches.elitedesk800.opencore/SSDT-EC-USBX.dsl`
+
+[Fixing Embedded Controller (SSDT-EC/USBX)](https://dortania.github.io/Getting-Started-With-ACPI/Universal/ec-fix.html)
+
+Manual > SSDT-EC-USBX.dsl
+
+## `patches.elitedesk800.opencore/SSDT-HPET.dsl` + OC patches
+
+[Fixing IRQ Conflicts (SSDT-HPET + OC_Patches.plist)](https://dortania.github.io/Getting-Started-With-ACPI/Universal/irq.html)
+
+So head over to [SSDT: Easy Way](https://dortania.github.io/Getting-Started-With-ACPI/ssdt-methods/ssdt-easy.html) on how to make it.(use option C to omit conflicting legacy IRQs)
+
+Manual > SSDT-HPET.dsl
+
+and patch
+
+```bash
+  #######################################################
+ #              Select IRQs To Nullify                 #
+#######################################################
+
+Current Legacy IRQs:
+
+ - IPIC: [2]
+ - MATH: [13]
+ -  RTC: [8]
+ - TIMR: [0]
+ - PS2K: [1]
+ - PS2M: [12, 4, 3, 4, 3, 3, 5, 7, 10, 4, 5, 7, 10, 3, 5, 7, 10, 4, 5, 7, 10, 5, 7, 10, 11, 14, 15, 5, 7, 10, 11, 14, 15, 5, 7, 10, 11, 14, 15, 5, 7, 10, 11, 14, 15, 5, 7, 10, 11, 14, 15, 5, 7, 10, 11, 14, 15]
+ - COM1: [0, 0]
+ - COM2: [0, 0]
+ - LPT1: [0]
+
+C. Only Conflicting IRQs from Legacy Devices (0,8,11 from IPIC/TMR/RTC)
+O. Only Conflicting IRQs (0,8,11)
+L. Legacy IRQs (from IPIC, TMR/TIMR, and RTC)
+
+You can also type your own list of Devices and IRQs.
+The format is DEV1:IRQ1,IRQ2 DEV2:IRQ3,IRQ4
+You can omit the IRQ# to remove all from that device (DEV1: DEV2:1,2,3)
+For example, to remove IRQ 0 from RTC, all from IPIC, and 8 and 11 from TMR:
+
+RTC:0 IPIC: TMR:8,11
+
+Please select an option (default is C):C
+```
+
+```xml
+<dict>
+    <key>ACPI</key>
+    <dict>
+        <key>Add</key>
+        <array>
+            <dict>
+                <key>Comment</key>
+                <string>HPET _CRS (Needs _CRS to XCRS Rename)</string>
+                <key>Enabled</key>
+                <true/>
+                <key>Path</key>
+                <string>SSDT-HPET.aml</string>
+            </dict>
+        </array>
+        <key>Patch</key>
+        <array>
+            <dict>
+                <key>Comment</key>
+                <string>HPET _CRS to XCRS Rename (SSDTTime)</string>
+                <key>Count</key>
+                <integer>0</integer>
+                <key>Enabled</key>
+                <true/>
+                <key>Find</key>
+                <data>
+                JV9DUlM=
+                </data>
+                <key>Limit</key>
+                <integer>0</integer>
+                <key>Mask</key>
+                <data>
+                </data>
+                <key>OemTableId</key>
+                <data>
+                AAAAAA==
+                </data>
+                <key>Replace</key>
+                <data>
+                JVhDUlM=
+                </data>
+                <key>ReplaceMask</key>
+                <data>
+                </data>
+                <key>Skip</key>
+                <integer>0</integer>
+                <key>TableLength</key>
+                <integer>0</integer>
+                <key>TableSignature</key>
+                <data>
+                AAAAAA==
+                </data>
+            </dict>
+            <dict>
+                <key>Comment</key>
+                <string>RTC IRQ 8 Patch (SSDTTime)</string>
+                <key>Count</key>
+                <integer>0</integer>
+                <key>Enabled</key>
+                <true/>
+                <key>Find</key>
+                <data>
+                IgABeQA=
+                </data>
+                <key>Limit</key>
+                <integer>0</integer>
+                <key>Mask</key>
+                <data>
+                </data>
+                <key>OemTableId</key>
+                <data>
+                AAAAAA==
+                </data>
+                <key>Replace</key>
+                <data>
+                IgAAeQA=
+                </data>
+                <key>ReplaceMask</key>
+                <data>
+                </data>
+                <key>Skip</key>
+                <integer>0</integer>
+                <key>TableLength</key>
+                <integer>0</integer>
+                <key>TableSignature</key>
+                <data>
+                AAAAAA==
+                </data>
+            </dict>
+            <dict>
+                <key>Comment</key>
+                <string>TIMR IRQ 0 Patch (SSDTTime)</string>
+                <key>Count</key>
+                <integer>0</integer>
+                <key>Enabled</key>
+                <true/>
+                <key>Find</key>
+                <data>
+                BCIBAHkA
+                </data>
+                <key>Limit</key>
+                <integer>0</integer>
+                <key>Mask</key>
+                <data>
+                </data>
+                <key>OemTableId</key>
+                <data>
+                AAAAAA==
+                </data>
+                <key>Replace</key>
+                <data>
+                BCIAAHkA
+                </data>
+                <key>ReplaceMask</key>
+                <data>
+                </data>
+                <key>Skip</key>
+                <integer>0</integer>
+                <key>TableLength</key>
+                <integer>0</integer>
+                <key>TableSignature</key>
+                <data>
+                AAAAAA==
+                </data>
+            </dict>
+        </array>
+    </dict>
+</dict>
+```
+
+## `patches.elitedesk800.opencore/SSDT-SBUS-MCHC.dsl`
+[up up up](#)
+
+[Fixing SMBus support (SSDT-SBUS-MCHC)](https://dortania.github.io/Getting-Started-With-ACPI/Universal/smbus.html)
+
+## `patches.elitedesk800.opencore/SSDT-USBX.dsl`
+[up up up](#)
+
+[Fixing USB Power](https://dortania.github.io/OpenCore-Post-Install/usb/misc/power.html)
+
+# DSDT patching (retired patches)
+[up up up](#)
+
+## ~~`DSDT.dsl`~~
+[up up up](#)
+
+**November 2020**: migration to OpenCore. Removed ([Dortania Guides](https://dortania.github.io/getting-started/))
+
+open with MaciASL the `patches.elitedesk800.clover/DSDT.dsl`. In the preferences use the `ACPI 6.2a` and try to compile. If you have only warnings you are good to proceed.
 
 Because we are hotpatching here you should not use the `DSDT.aml` in the clover directory. If you need to use it for debugging purposes then you need to put it in `CLOVER/ACPI/patched` and check the clover setting `config.plist/ACPI/DSDT/Fixes/FixRegions=true)` to fix the *Floating Regions* as described in [Rehabman's guide](https://www.tonymacx86.com/threads/guide-patching-laptop-dsdt-ssdts.152573/)
 
-## `patches.elitedesk800/SSDT-XOSI.dsl`
+## ~~`patches.elitedesk800.clover/SSDT-XOSI.dsl`~~
 [up up up](#)
+
+**November 2020**: migration to OpenCore. Removed ([Dortania Guides](https://dortania.github.io/getting-started/))
 
 copy `cp $HACK/git/Rehabman.git/OS-X-Clover-Laptop-Config.git/hotpatch/SSDT-XOSI.dsl patches.air/SSDT-XOSI.dsl` and edit `patches.air/SSDT-XOSI.dsl`
 
@@ -139,15 +332,19 @@ apply clover renames (OSIN first because there is some type of bug on the DSDT p
 
 This XOSI simulates "Windows 2015" (which is Windows 10)
 
-## `patches.elitedesk800/SSDT-RMCF.dsl`
+## ~~`patches.elitedesk800.clover/SSDT-RMCF.dsl`~~
 [up up up](#)
 
-`cp $HACK/git/Rehabman.git/OS-X-Clover-Laptop-Config.git/hotpatch/SSDT-RMCF.dsl patches.elitedesk800/SSDT-RMCF.dsl` and edit it uaccording to the readme
+**November 2020**: migration to OpenCore. Removed ([Dortania Guides](https://dortania.github.io/getting-started/))
 
-## `patches.elitedesk800/SSDT-PTSWAK.dsl`
+`cp $HACK/git/Rehabman.git/OS-X-Clover-Laptop-Config.git/hotpatch/SSDT-RMCF.dsl patches.elitedesk800.clover/SSDT-RMCF.dsl` and edit it uaccording to the readme
+
+## ~~`patches.elitedesk800.clover/SSDT-PTSWAK.dsl`~~
 [up up up](#)
 
-`cp $HACK/git/Rehabman.git/OS-X-Clover-Laptop-Config.git/hotpatch/SSDT-PTSWAK.dsl patches.elitedesk800/SSDT-PTSWAK.dsl`
+**November 2020**: migration to OpenCore. Removed ([Dortania Guides](https://dortania.github.io/getting-started/))
+
+`cp $HACK/git/Rehabman.git/OS-X-Clover-Laptop-Config.git/hotpatch/SSDT-PTSWAK.dsl patches.elitedesk800.clover/SSDT-PTSWAK.dsl`
 
 Overriding _PTS and _WAK. There is no discrete card in *EliteDesk-800*. However this is known from the `SSDT-RMCF.dsl` and you do not make any changes.
 
@@ -156,10 +353,12 @@ apply clover renames:
 * change Method(_PTS,1,N) to ZPTS (SSDT-PTSWAK.dsl) `X1BUUwE=` to `WlBUUwE=`
 * change Method(_WAK,1,S) to ZWAK (SSDT-PTSWAK.dsl) `X1dBSwk=` to `WldBSwk=`
 
-## `patches.elitedesk800/SSDT-GPRW.dsl`
+## ~~`patches.elitedesk800.clover/SSDT-GPRW.dsl`~~
 [up up up](#)
 
-`cp $HACK/git/Rehabman.git/OS-X-Clover-Laptop-Config.git/hotpatch/SSDT-GPRW.dsl patches.elitedesk800/SSDT-GPRW.dsl`
+**November 2020**: migration to OpenCore. Removed ([Dortania Guides](https://dortania.github.io/getting-started/))
+
+`cp $HACK/git/Rehabman.git/OS-X-Clover-Laptop-Config.git/hotpatch/SSDT-GPRW.dsl patches.elitedesk800.clover/SSDT-GPRW.dsl`
 
 For solving instant wake by hooking GPRW
 
@@ -167,50 +366,59 @@ apply clover renames:
 
 * change Method(GPRW,2,N) to XPRW (SSDT-GPRW.dsl) `R1BSVwI=` to `WFBSVwI=`
 
-## `patches.elitedesk800/SSDT-RMDT.dsl`
+## ~~`patches.elitedesk800.clover/SSDT-RMDT.dsl`~~
 [up up up](#)
 
-`cp $HACK/git/Rehabman.git/OS-X-Clover-Laptop-Config.git/hotpatch/SSDT-RMDT.dsl patches.elitedesk800/SSDT-RMDT.dsl`
+**November 2020**: migration to OpenCore. Removed ([Dortania Guides](https://dortania.github.io/getting-started/))
+
+`cp $HACK/git/Rehabman.git/OS-X-Clover-Laptop-Config.git/hotpatch/SSDT-RMDT.dsl patches.elitedesk800.clover/SSDT-RMDT.dsl`
 
 Facility for writing trace output to system.log, Use in conjunction with ACPIDebug.kext
 
-## `patches.elitedesk800/SSDT-DMAC.dsl` 
+## ~~`patches.elitedesk800.clover/SSDT-DMAC.dsl`~~
 [up up up](#)
 
-Add missing DMAC Device to enhace performance like a real Mac. Inspired by [syscl](https://github.com/syscl/XPS9350-macOS/tree/master/DSDT/patches). 
+**November 2020**: migration to OpenCore. Removed ([Dortania Guides](https://dortania.github.io/getting-started/))
 
-## `patches.elitedesk800/SSDT-HPET.dsl` 
+Add missing DMAC Device to enhace performance like a real Mac. Inspired by [syscl](https://github.com/syscl/XPS9350-macOS/tree/master/DSDT/patches).
+
+## ~~`patches.elitedesk800.clover/SSDT-HPET.dsl`~~
 [up up up](#)
+
+**November 2020**: migration to OpenCore. Removed ([Dortania Guides](https://dortania.github.io/getting-started/))
 
 Disable HPET device by passing value 0 to HPTE to to behave more like a real Mac.
 
 > updated 20190718 (from daliansky/XiaoMi-Pro-Hackintosh repository)
 
-## `patches.elitedesk800/SSDT-MEM2.dsl` 
+## ~~`patches.elitedesk800.clover/SSDT-MEM2.dsl`~~
 [up up up](#)
 
-Add missing MEM2 Device to enhace performance like a real Mac. Inspired by [syscl](https://github.com/syscl/XPS9350-macOS/tree/master/DSDT/patches). 
+**November 2020**: migration to OpenCore. Removed ([Dortania Guides](https://dortania.github.io/getting-started/))
+
+Add missing MEM2 Device to enhace performance like a real Mac. Inspired by [syscl](https://github.com/syscl/XPS9350-macOS/tree/master/DSDT/patches).
 
 > updated 20190718 (from daliansky/XiaoMi-Pro-Hackintosh repository)
 
-## `patches.elitedesk800/SSDT-PMCR.dsl` 
+## ~~`patches.elitedesk800.clover/SSDT-PMCR.dsl`~~
 [up up up](#)
 
-Add missing PMCR Device to enhace performance like a real Mac. Inspired by [syscl](https://github.com/syscl/XPS9350-macOS/tree/master/DSDT/patches). (PPMC and PMCR combine together for macOS to load LPCB correctly). 
+**November 2020**: migration to OpenCore. Removed ([Dortania Guides](https://dortania.github.io/getting-started/))
+
+Add missing PMCR Device to enhace performance like a real Mac. Inspired by [syscl](https://github.com/syscl/XPS9350-macOS/tree/master/DSDT/patches). (PPMC and PMCR combine together for macOS to load LPCB correctly).
 
 > updated 20190718 (from daliansky/XiaoMi-Pro-Hackintosh repository)
 
-## `patches.elitedesk800/SSDT-LPC.dsl`
+## ~~`patches.elitedesk800.clover/SSDT-LPC.dsl`~~
 [up up up](#)
 
-`cp $HACK/git/Rehabman.git/OS-X-Clover-Laptop-Config.git/hotpatch/SSDT-LPC.dsl patches.elitedesk800/SSDT-LPC.dsl`
+**November 2020**: migration to OpenCore. Removed ([Dortania Guides](https://dortania.github.io/getting-started/))
+
+`cp $HACK/git/Rehabman.git/OS-X-Clover-Laptop-Config.git/hotpatch/SSDT-LPC.dsl patches.elitedesk800.clover/SSDT-LPC.dsl`
 
 To fix unsupported 8-series LPC devices. looked in ioreg and look for LPC. mine is 0x9d48 which is included here
 
-# DSDT patching (retired patches)
-[up up up](#)
-
-## ~~`patches.elitedesk800/SSDT-EC.dsl`~~
+## ~~`patches.elitedesk800.clover/SSDT-EC.dsl`~~
 [up up up](#)
 
 **February 2019**: after looking the DSDT.dsl it turns out that there is an `EC0`. So I applied the EC0 to EC rename patch in the config.plist
@@ -221,238 +429,64 @@ according to this [article](https://www.tonymacx86.com/threads/guide-usb-power-p
 
 > Note: You may find you have an EC in your DSDT: Device with "Name (_HID, EisaId ("PNP0C09"))", even if it is not active.
 
-## ~~`patches.elitedesk800/SSDT-USBX.dsl`~~
+## ~~`patches.elitedesk800.clover/SSDT-USBX.dsl`~~
 [up up up](#)
 
 **February 2019**: This is done now using the codeless kext `USBPorts.kext` produced from the Hackingtool
 
-This has the `USBX` device for the power injection according to the [article](https://www.tonymacx86.com/threads/guide-usb-power-property-injection-for-sierra-and-later.222266/) 
+This has the `USBX` device for the power injection according to the [article](https://www.tonymacx86.com/threads/guide-usb-power-property-injection-for-sierra-and-later.222266/)
 
-## ~~`patches.elitedesk800/SSDT-UIAC.dsl`~~
+## ~~`patches.elitedesk800.clover/SSDT-UIAC.dsl`~~
 [up up up](#)
 
 **February 2019**: This is done now using the codeless kext `USBPorts.kext` produced from the Hackingtool
 
-The following ports are **disabled** . Check [SSDT-UIAC.dsl](patches.elitedesk800/SSDT-UIAC.dsl) for more information on patching
+The following ports are **disabled** . Check [SSDT-UIAC.dsl](patches.elitedesk800.clover/SSDT-UIAC.dsl) for more information on patching
 
 * USB back, bottom row, 1rst from left
 * USB back, bottom row, 2nd from left
 * USB back, bottom row, 3rd from left
 * USB back, bottom row, 4rth from left
 
-
-# `Clover installation (before Catalina)`
+# `config.plist`
 [up up up](#)
 
-~~I have read in many places including [here](https://www.tonymacx86.com/threads/guide-hp-elite-8300-hp-6300-pro-using-clover-uefi-hotpatch.265384/) that RehabMan's clover fork is more stable so this is the one we are going to use.~~ **July 2019 update:** I switched to latest official all other repositories have being doing this
+[Desktop Skylake](https://dortania.github.io/OpenCore-Install-Guide/config.plist/skylake.html#starting-point)
 
-Regarding the drivers used some of them where from the clover distribution and some of them are forks from [acidanthera](https://github.com/acidanthera) github repository. More specifically I have used:
-
-* `AptioInputFix.efi` from [acidanthera/AptioFixPkg](https://github.com/acidanthera/AptioFixPkg/releases) `AptioFix-R27-RELEASE.zip`
-* `AptioMemoryFix.efi` from [acidanthera/AptioFixPkg](https://github.com/acidanthera/AptioFixPkg/releases) `AptioFix-R27-RELEASE.zip`
-* `ApfsDriverLoader.efi` from [acidanthera/AppleSupportPkg](https://github.com/acidanthera/AppleSupportPkg) `AppleSupport-v2.0.8-RELEASE.zip`
-* `AppleUiSupport.efi` from [acidanthera/AppleSupportPkg](https://github.com/acidanthera/AppleSupportPkg) `AppleSupport-v2.0.8-RELEASE.zip`
-
-> Regarding `AptioInputFix.efi` and `AptioMemoryFix.efi` these are being used in [XiaoMi-Pro-Hackintosh](https://github.com/daliansky/XiaoMi-Pro-Hackintosh) and it noted in [Which OsxAptioFixDrv (1, 2, or 3) do I use for my Coffee Lake hack?](https://www.reddit.com/r/hackintosh/comments/7r752l/which_osxaptiofixdrv_1_2_or_3_do_i_use_for_my/) that 'Probably also worthwhile to look at vit9696's AptioFixPkg as well, as that's made some serious progress toward native NVRAM on Skylake+ hardware (among other things).'
-
-> Regarding `ApfsDriverLoader.efi` and `AppleUiSupport.efi` these are being used in [XiaoMi-Pro-Hackintosh](https://github.com/daliansky/XiaoMi-Pro-Hackintosh) and it noted in [Possible to get FileVault boot drive encryption working on old MSI P67A-C45 motherboard Intel P67 chipset?](https://www.reddit.com/r/hackintosh/comments/a5yxl9/possible_to_get_filevault_boot_drive_encryption/) that 'OsxAptioFixDrv/etc are general drivers that fix a variety of Aptio issues when booting macOS; FileVault is out of their scope (they mainly fix memory mapping issues that prevent boot.efi from loading the kernel). Unless you are running TianoCore-based FW or something special, you will always need some driver for fixing Aptio issues. For a general Aptio firmware fix, just use AptioMemoryFix. There is no point in using anything else (especially on older hardware). You should also use the latest Clover (who knows how old UniBeast's version is).For FV2 support, you need AppleUiSupport from AppleSupportPkg and an input driver. For input, you should either use AptioInputFix (part of AptioFixPkg or UsbKbDxe (also from AppleSupportPkg; you may need additional workarounds to disconnect existing USB keyboard drivers; here is a build with this workaround enabled).'
-
-* `HFSPlus.efi` *from an external source*
-* `VirtualSmc.efi` *from VirtualSMC (1.0.6)*
-
-*Clover for UEFI booting only*, *Install Clover in the ESP*
-
-*UEFI Drivers* / *Reccomended Drivers*:
-
-* `AudioDxe.efi`
-* `DataHubDxe.efi`
-* `FSInject.efi`
-
-*UEFI Drivers* / *FileVault 2 UEFI Drivers* :
-
-* `AppleKeyFeeder.efi`
-
-*Install Clover Preference Pane*
-
-> make sure that in `EFI/CLOVER/drivers/UEFI` you have only the following files: `AppleKeyFeeder.efi`, `AudioDxe.efi`, `DataHubDxe.efi`, `FSInject.efi`. Erase the rest (Clover installer sometimes installs other dependencies)
-
-# `Clover installation` **February 2020 / Catalina**
+## ACPI
 [up up up](#)
 
-Run `Clover_v2.5k_r5103` installer:
+autogenerate with OC Snapshot/OC Clean Snapshot in the beggining)
 
-*Continue* > *Continue* > *Change Install Location* > *Install macOS Catalina* > *Customize*
-
-*Clover for UEFI booting only*, *Install Clover in the ESP*
-
-*Install RC scripts on target volume* **Only on the hard disk for NVRAM emulation**
-
-*Install Clover Preference Pane* **Only on the hard disk**
-
-> Create `EFI/CLOVER/drivers/UEFI` or Erase all files in `EFI/CLOVER/drivers/UEFI` if exitsts and copy the ones from the release directory
-
-`EFI/CLOVER/drivers/UEFI` will have the following:
-
-* ApfsDriverLoader.efi
-* AppleGenericInput.efi
-* AppleUiSupport.efi
-* AudioDxe.efi
-* EmuVariableUefi.efi
-* FwRuntimeServices.efi
-* HFSPlus.efi
-* OcQuirks.efi
-* OcQuirks.plist
-* UsbKbDxe.efi
-* UsbMouseDxe.efi
-* VirtualSmc.efi
-
-These files come from:
-
-* [Designare Z390](https://www.tonymacx86.com/threads/success-gigabyte-designare-z390-thunderbolt-3-i7-9700k-amd-rx-580.267551/page-1131#post-2046300). Use the `OcQuirks Rev 15 - Designare Z390.zip` and `Catalina Fresh Install.zip`
-* [Filevault](https://fewtarius.gitbook.io/laptopguide/extras/enabling-filevault). Use the `AppleSupport-2.0.9-RELEASE.zip`
-
-
-# `Clover Config`
+## Booter
 [up up up](#)
 
-In general I prefer the Clover Configurator although it it not reccomended
+leave default
 
-## `ACPI`
+## DeviceProperties
 [up up up](#)
 
-* `AutoMerge > YES`
-* `FixHeaders > YES`
+start with bare minimum according to documentation
 
-* `DSDT > DropOEM_DSM > NO`
+* Sound card is `Realtek ALC221` which is driven by `AppleALC`:
 
-* `DSDT > Fixes > AddDTGP > YES`
-* `DSDT > Fixes > AddMCHC > YES`
-* `DSDT > Fixes > FixADP1 > YES`
-* `DSDT > Fixes > FixTMR > YES`
-* `DSDT > Fixes > FixRTC > YES`
-* `DSDT > Fixes > FixHPET > YES`
-* `DSDT > Fixes > FixIPIC > YES`
-* `DSDT > Fixes > FixRegions > YES` *only when using custom DSDT.aml*
-
-* `DSDT > Patches`
-
-```xml
-<key>Patches</key>
-<array>
-<dict>
-    <key>Comment</key> <string>change OSIN to XSIN (SSDT-XOSI.dsl)</string>
-    <key>Find</key> <data>T1NJTg==</data>
-    <key>Replace</key> <data>WFNJTg==</data>
-</dict>
-<dict>
-    <key>Comment</key> <string>change _OSI to XOSI (SSDT-XOSI.dsl)</string>
-    <key>Find</key> <data>X09TSQ==</data> 
-    <key>Replace</key> <data>WE9TSQ==</data>
-</dict>
-<dict>
-    <key>Comment</key> <string>change _DSM to XDSM</string>
-    <key>Find</key> <data>X0RTTQ==</data> 
-    <key>Replace</key> <data>WERTTQ==</data>
-</dict>
-<dict>
-    <key>Comment</key> <string>change SAT0 to SATA (SSDT-SMBUS.dsl)</string>
-    <key>Find</key> <data>U0FUMA==</data>
-    <key>Replace</key> <data>U0FUQQ==</data>
-</dict>
-<dict>
-    <key>Comment</key> <string>change Method(GPRW,2,N) to XPRW (SSDT-GPRW.dsl)</string>
-    <key>Find</key> <data>R1BSVwI=</data>
-    <key>Replace</key> <data>WFBSVwI=</data>
-</dict>
-<dict>
-    <key>Comment</key> <string>change EC0 to EC (USB Related)</string> 
-    <key>Find</key> <data>RUMwXw==</data>
-    <key>Replace</key> <data>RUNfXw==</data>
-</dict>
-</array>
-```
-
-**July 2019**: The following have been retired since WhatEverGreen is doing them [Intel® HD Graphics FAQ](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.IntelHD.en.md)
-
-```xml
-<dict>
-    <key>Disabled</key>
-    <true/>
-    <key>Comment</key> <string>change HDAS to HDEF</string>
-    <key>Find</key> <data>SERBUw==</data>
-    <key>Replace</key> <data>SERFRg==</data>
-</dict>
-<dict>
-    <key>Disabled</key>
-    <true/>
-    <key>Comment</key> <string>change HECI to IMEI</string>
-    <key>Find</key> <data>SEVDSQ==</data>
-    <key>Replace</key> <data>SU1FSQ==</data>
-</dict>
-<dict>
-    <key>Disabled</key>
-    <true/>
-    <key>Comment</key> <string>change GFX0 to IGPU</string>
-    <key>Find</key> <data>R0ZYMA==</data>
-    <key>Replace</key> <data>SUdQVQ==</data>
-</dict>
-```
-
-
-* `DropTables > Signature > DMAR`
-
-* `SSDT > DropOem > No`
-* `SSDT > Generate > PluginType > YES`
-* `SSDT > NoOemTableId > NO`
-
-## `ACPI`
-[up up up](#)
-
-* `Arguments > -liludbg -wegdbg -igfxdump -igfxfbdump dart=0 -igfxnohdmi gfxrst=1 agdpmod=vit9696 -cdfon -v` *for Lilu/WhateverGreen debugging*
-* `Arguments > dart=0 -igfxnohdmi igfxrst=1 agdpmod=vit9696 -cdfon -v`
-* `DefaultVolume > LastBootedVolume`
-* `HibernationFixup > YES`
-* `Legacy > PBR`
-* `NeverHibernate > NO`
-* `NoEarlyProgress > YES`
-* `RtcHibernateAware > YES`
-* `Secure > NO`
-* `Timeout > 4`
-
-## `CPU`
-[up up up](#)
-
-* `HWPEnable > YES` *this apply only in skylake architecture*
-* `UseARTFrequency > NO` *do not pass any specific arguments*
-
-## `Devices`
-[up up up](#)
-
-* `Audio > Inject > NO`
-
-* `USB > AddClockID > YES`
-* `USB > FixOwnership > YES`
-* `USB > Inject > NO`
-
-* `$HACK/bin/gfxutil -f HDEF` - `Properties > PciRoot(0x0)/Pci(0x1f,0x3)`
 
 ```xml
 <key>PciRoot(0x0)/Pci(0x1f,0x3)</key>
 <dict>
-   <key>AAPL,slot-name</key>
-   <string>Internal</string>
-   <key>hda-gfx</key>
-   <string>onboard-1</string>
-   <key>hda-idle-support</key>
-   <string>1</string>
-   <key>layout-id</key>
-   <integer>11</integer>
-   <key>model</key>
-   <string>Realtek ALC221 Audio Controller</string>
+    <key>AAPL,slot-name</key>
+    <string>Internal</string>
+    <key>hda-idle-support</key>
+    <string>1</string>
+    <key>layout-id</key>
+    <integer>11</integer>
+    <key>model</key>
+    <string>Realtek ALC221 Audio Controller</string>
 </dict>
+<key>PciRoot(0x0)/Pci(0x1f,0x3)</key>
 ```
 
-* `$HACK/bin/gfxutil -f IGPU` - `Properties > DevicePath = PciRoot(0x0)/Pci(0x2,0x0)`
+video, Intel HD Graphics 530, 0x19120000, stolenmem patch
 
 ```xml
 <key>PciRoot(0x0)/Pci(0x2,0x0)</key>
@@ -501,383 +535,235 @@ In general I prefer the Clover Configurator although it it not reccomended
     <data>AQAAAA==</data>
     <key>framebuffer-patch-enable</key>
     <data>AQAAAA==</data>
-    <key>hda-gfx</key>
-    <string>onboard-1</string>
 </dict>
 ```
 
-additional devices have been added from the Hackingtool/PCItab and exported
-
-```xml
-<key>PciRoot(0x0)/Pci(0x0,0x0)</key>
-<dict>
-    <key>AAPL,slot-name</key>
-    <string>Internal</string>
-    <key>device_type</key>
-    <string>Host bridge</string>
-    <key>model</key>
-    <string>Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers</string>
-</dict>
-<key>PciRoot(0x0)/Pci(0x14,0x0)</key>
-<dict>
-    <key>AAPL,slot-name</key>
-    <string>Internal</string>
-    <key>device_type</key>
-    <string>USB controller</string>
-    <key>model</key>
-    <string>100 Series/C230 Series Chipset Family USB 3.0 xHCI Controller</string>
-</dict>
-<key>PciRoot(0x0)/Pci(0x14,0x2)</key>
-<dict>
-    <key>AAPL,slot-name</key>
-    <string>Internal</string>
-    <key>device_type</key>
-    <string>Signal processing controller</string>
-    <key>model</key>
-    <string>100 Series/C230 Series Chipset Family Thermal Subsystem</string>
-</dict>
-<key>PciRoot(0x0)/Pci(0x17,0x0)</key>
-<dict>
-    <key>AAPL,slot-name</key>
-    <string>Internal</string>
-    <key>device_type</key>
-    <string>SATA controller</string>
-    <key>model</key>
-    <string>Q170/Q150/B150/H170/H110/Z170/CM236 Chipset SATA Controller [AHCI Mode]</string>
-</dict>
-<key>PciRoot(0x0)/Pci(0x1f,0x0)</key>
-<dict>
-    <key>AAPL,slot-name</key>
-    <string>Internal</string>
-    <key>device_type</key>
-    <string>ISA bridge</string>
-    <key>model</key>
-    <string>Q170 Chipset LPC/eSPI Controller</string>
-</dict>
-<key>PciRoot(0x0)/Pci(0x1f,0x2)</key>
-<dict>
-    <key>AAPL,slot-name</key>
-    <string>Internal</string>
-    <key>device_type</key>
-    <string>Memory controller</string>
-    <key>model</key>
-    <string>100 Series/C230 Series Chipset Family Power Management Controller</string>
-</dict>
-<key>PciRoot(0x0)/Pci(0x1f,0x4)</key>
-<dict>
-    <key>AAPL,slot-name</key>
-    <string>Internal</string>
-    <key>device_type</key>
-    <string>SMBus</string>
-    <key>model</key>
-    <string>100 Series/C230 Series Chipset Family SMBus</string>
-</dict>
-<key>PciRoot(0x0)/Pci(0x1f,0x6)</key>
-<dict>
-    <key>AAPL,slot-name</key>
-    <string>Internal</string>
-    <key>device_type</key>
-    <string>Ethernet controller</string>
-    <key>model</key>
-    <string>Ethernet Connection (2) I219-LM</string>
-</dict>
-```
-
-## `GUI`
+## Kernel
 [up up up](#)
 
+* `AppleXcpmCfgLock`: `True` (CFG Locked)
+* `LapicKernelPanic`: `True` for hp systems
+* `PanicNoKextDump`: `True` Allows for reading kernel panics logs when kernel panics occur
+* `PowerTimeoutKernelPanic`: `True` Helps fix kernel panics relating to power changes with Apple drivers in macOS Catalina, most notably with digital audio.
+* `XhciPortLimit`: `True` This is actually the 15 port limit patch, don't rely on it as it's not a guaranteed solution for fixing USB. Please create a USB map when possible.
+
+## Misc
+[up up up](#)
+
+* `Boot > HideAuxiliary > True`: so only the bootable ones space to see everything
+
+* `Security > AllowNvramReset > True`: Allows for NVRAM reset both in the boot picker and when pressing Cmd+Opt+P+R
+* `Security > AllowSetDefault > True`: Allow CTRL+Enter and CTRL+Index to set default boot device in the picker
+* `Security > Vault > Optional`: We won't be dealing vaulting so we can ignore, you won't boot with this set to Secure. note that it is case-sensitive
+* `Security > ScanPolicy > 0`: 0 allows you to see all drives available
+* `Security > SecureBootModel > Default`: Enables Apple's secure boot functionality in macOS, please refer to Security section for further details.
+
+## NVRAM
+[up up up](#)
+
+* `4D1EDE05-38C7-4A6A-9CC6-4BCCA8B38C14` Used for OpenCore's UI scaling, default will work for us.
+* `4D1EDE05-38C7-4A6A-9CC6-4BCCA8B38C14 > UIScale > 1`: Standard resolution (2 HiDPI (generally required for FileVault to function correctly on smaller displays))
+* `4D1EDE05-38C7-4A6A-9CC6-4BCCA8B38C14 > DefaultBackgroundColor > 00000000`: Syrah Black
+
+
+* `4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102` OpenCore's NVRAM GUID, mainly relevant for RTCMemoryFixup users.
+
+* `7C436110-AB2A-4BBB-A880-FE41995C9F82` SIP bitmask
+* `7C436110-AB2A-4BBB-A880-FE41995C9F82> boot-args > -v keepsyms=1 debug=0x100 agdpmod=vit9696 gfxrst=1 -igfxnohdmi -cdfon rtcfx_exclude=58-59,B0-B3,D0-DF`
+* `7C436110-AB2A-4BBB-A880-FE41995C9F82 > csr-active-config > 00000000` enables System Integrity Protectio
+* `7C436110-AB2A-4BBB-A880-FE41995C9F82 > un-efi-updater > False`: This is used to prevent Apple's firmware update packages from installing and breaking boot order; this is important as these firmware updates (meant for Macs) will not work.
+* `7C436110-AB2A-4BBB-A880-FE41995C9F82 > prev-lang:kbd > 656e2d55533a30`: Default in Sample config is Russian, use 656e2d55533a30 for enUS
+
+* `WriteFlash > True`: Enables writing to flash memory for all added variables.
+
+## PlatformInfo
+[up up up](#)
+
+* `Generic > ROM > 112233445566` Mac address of the buildin interface.
+* `Generic > SystemProductName > iMac17,1`
+* `Generic > MLB > XXXXXXXXXXXXXXXXX`
+* `Generic > SystemSerialNumber > C02RG1OEGG7L`
+* `Generic > SystemSerialNumber > XXXXXXXXXXXX`
+* `Generic >  SystemUUID > XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX`
+* `Automatic > True` Generates PlatformInfo based on Generic section instead of DataHub, NVRAM, and SMBIOS sections#
+
+## UEFI
+[up up up](#)
+
+* `ConnectDrivers > True` Forces .efi drivers
+* `Drivers` Only drivers present here should be: HfsPlus.efi OpenRuntime.ef
+* `Quirks > ReleaseUsbOwnership > True` Releases USB controller from firmware driver, needed for when your firmware doesn't support EHCI/XHCI Handoff. Most laptops have garbage firmwares so we'll need this as well
+
+## OpenCore beauty treatment
+[up up up](#)
+
+[Add Gui and Boot-chime](https://dortania.github.io/OpenCore-Post-Install/cosmetic/gui.html#setting-up-opencore-s-gui)
+
+* `OC/Drivers/OpenCanopy.efi`
+* `OC/Drivers/AudioDxe.efi`
+* `OC/Resources` from [OcBinaryData](https://github.com/acidanthera/OcBinaryData)
+* `Misc -> Boot -> PickerMode: External`
+* `Misc -> Boot -> PickerAttributes:1`
+* `NVRAM -> Add -> 7C436110-AB2A-4BBB-A880-FE41995C9F82 > SystemAudioVolume | Data | 0x46`
+
+UEFI
+
 ```xml
-<key>GUI</key>
+<key>Audio</key>
 <dict>
-    <key>Hide</key>
-    <array>
-        <string>Preboot</string>
-        <string>Recovery</string>
-    </array>
-    <key>Mouse</key>
-    <dict>
-        <key>Enabled</key>
-        <false/>
-    </dict>
-    <key>Scan</key>
-    <dict>
-        <key>Entries</key>
-        <true/>
-        <key>Legacy</key>
-        <false/>
-        <key>Linux</key>
-        <true/>
-        <key>Tool</key>
-        <true/>
-    </dict>
-    <key>ScreenResolution</key>
-    <string>1920x1080</string>
-    <key>Theme</key>
-    <string>embedded</string>
-</dict>
-```
-
-## `Graphics`
-[up up up](#)
-
-```xml
-<key>Graphics</key>
-<dict>
-    <key>EDID</key>
-    <dict>
-        <key>Inject</key>
-        <true/>
-    </dict>
-    <key>Inject</key>
-    <dict>
-        <key>ATI</key>
-        <false/>
-        <key>Intel</key>
-        <false/>
-        <key>NVidia</key>
-        <false/>
-    </dict>
-</dict>
-```
-
-## `KernelAndKextPatches`
-[up up up](#)
-
-```xml
-<key>KernelPm</key> <true/>
-<key>AppleRTC</key> <true/>
-<key>KernelXCPM</key> <true/>
-```
-
-```xml
-<key>KernelToPatch</key>
-<array>
-    <dict>
-        <key>Comment</key>
-        <string>MSR 0xE2 _xcpm_idle instant reboot(c) Pike R. Alpha</string>
-        <key>Find</key>
-        <data>ILniAAAADzA=</data>
-        <key>Replace</key>
-        <data>ILniAAAAkJA=</data>
-    </dict>
-    <dict>
-        <key>Comment</key>
-        <string>Disable panic kext logging on 10.13 release kernel (credit vit9696)</string>
-        <key>Find</key>
-        <data>igKEwHRE</data>
-        <key>MatchOS</key>
-        <string>10.13.x</string>
-        <key>Replace</key>
-        <data>igKEwOtE</data>
-    </dict>
-    <dict>
-        <key>Comment</key>
-        <string>Disable panic kext logging on 10.14 release kernel (credit vit9696)</string>
-        <key>Find</key>
-        <data>igKEwHRC</data>
-        <key>MatchOS</key>
-        <string>10.14.x</string>
-        <key>Replace</key>
-        <data>igKEwOtC</data>
-    </dict>
-</array>
-```
-
-```xml
-<key>KextsToPatch</key>
-<array>
-    <dict>
-        <key>Comment</key>
-        <string>Enable TRIM for SSD</string>
-        <key>Find</key>
-        <data>AEFQUExFIFNTRAA=</data>
-        <key>InfoPlistPatch</key>
-        <false/>
-        <key>Name</key>
-        <string>com.apple.iokit.IOAHCIBlockStorage</string>
-        <key>Replace</key>
-        <data>AAAAAAAAAAAAAAA=</data>
-    </dict>
-</array>
-```
-
-## `RtVariables`
-[up up up](#)
-
-```xml
-<key>RtVariables</key>
-<dict>
-    <key>BooterConfig</key>
-    <string>0x28</string>
-    <key>CsrActiveConfig</key>
-    <string>0x67</string>
-    <key>ROM</key>
-    <string>UseMacAddr0</string>
-</dict>
-```
-
-## `SMBIOS`
-[up up up](#)
-
-**MacBookPro17,1**
-
-## `SystemParameters`
-[up up up](#)
-
-```xml
-<key>SystemParameters</key>
-<dict>
-    <key>InjectKexts</key>
-    <string>YES</string>
-    <key>InjectSystemID</key>
+    <key>AudioCodec</key>
+    <integer>0</integer>
+    <key>AudioDevice</key>
+    <string>PciRoot(0x0)/Pci(0x1f,0x3)</string>
+    <key>AudioOut</key>
+    <integer>0</integer>
+    <key>AudioSupport</key>
     <true/>
-</dict>
-```
-
-On a USB Flash Drive recover:
-
-If placed kexts on `/L/E` then:
-
-```xml
-<key>SystemParameters</key>
-<dict>
-    <key>InjectKexts</key>
-    <string>Detect</string>
-    <key>InjectSystemID</key>
+    <key>MinimumVolume</key>
+    <integer>70</integer>
+    <key>PlayChime</key>
     <true/>
+    <key>VolumeAmplifier</key>
+    <integer>143</integer>
 </dict>
 ```
 
-If placed kexts on `EFI/CLOVER/kexts/Other` then:
-
-```xml
-<key>SystemParameters</key>
-<dict>
-    <key>InjectKexts</key>
-    <string>YES</string>
-    <key>InjectSystemID</key>
-    <true/>
-</dict>
+```bash
+cd /Downloads
+wget https://github.com/acidanthera/OcBinaryData/archive/master.zip && unzip master.zip
+\rm -rf /Volumes/EFI/EFI/OC/Resources
+mv OcBinaryData-master/Resources /Volumes/EFI/EFI/OC/Resources
 ```
+
+# How to Debug
+[up up up](#)
+
+* `Misc > Debug > AppleDebug > True`: Enables boot.efi logging, useful for debugging. Note this is only supported on 10.15.4 and newer
+* `Misc > Debug > ApplePanic > True`: Attempts to log kernel panics to disk
+* `Misc > Debug > DisableWatchDog > True`: Disables the UEFI watchdog, can help with early boot issues
+* `Misc > Debug > DisplayLevel > 2147483650`: Shows even more debug information, requires **DEBUG** version of OpenCore
+* `Misc > Debug > SerialInit > False`: Needed for setting up serial output with OpenCore
+* `Misc > Debug > SysReport > False`: Helpful for debugging such as dumping ACPI tables, Note that this is limited to **DEBUG** versions of OpenCore
+* `Misc > Debug > Target > 67`: Shows more debug information, Note that this is limited to **DEBUG** versions of OpenCore
+* `Misc > Security > ExposeSensitiveData > 6`: Shows more debug information, requires **DEBUG** version of OpenCore
+
+* `NVRAM > 7C436110-AB2A-4BBB-A880-FE41995C9F82 > boot-args > -v`
+* `NVRAM > 7C436110-AB2A-4BBB-A880-FE41995C9F82 > boot-args > debug=0x100`: this disables macOS's watchdog which helps prevents a reboot on a kernel panic
+* `NVRAM > 7C436110-AB2A-4BBB-A880-FE41995C9F82 > boot-args > keepsyms=1`: This is a companion setting to debug=0x100 that tells the OS to also print the symbols on a kernel panic
+
+[OpenCore Debugging](https://dortania.github.io/OpenCore-Install-Guide/troubleshooting/debug.html#file-swaps)
+
+# RTC problems
+[up up up](#)
+
+[Finding our bad RTC region](https://dortania.github.io/OpenCore-Post-Install/misc/rtc.html#finding-our-bad-rtc-region) and [here](https://www.tonymacx86.com/threads/hp-elitedesk-800-g2-hp-prodesk-600-g2-success.261452/page-21#post-2101758) and [here](https://www.tonymacx86.com/threads/hp-elitedesk-800-g2-hp-prodesk-600-g2-success.261452/page-21#post-2109461)
+
+```text
+RTCMemoryFix.kext works in Clover and OpenCore. This is the way to avoid POST errors on reboot.
+
+Even for Clover better use this instead of the FixRTC patch, since it breaks hibernation by reducing the available RTC memory and avoiding encryption key preservation.
+
+For this machine add "rtcfx_exclude=58-59,D0-DF" in your boot args list. Tested with Clover V5.0 r5008 and OpenCore 0.5.7 together with current Mojave and Catalina. It was really much work to find this out...
+
+You are welcome! One additional note to that: I notice post errors when doing updates or using the installer. To avoid this add B0-B3. That is, "rtcfx_exclude=58-59,B0-B3,D0-DF"
+```
+
+# TRIM on SSDs
+[up up up](#)
+
+based on the `Configuration.pdf` of Opencore:
+
+```text
+ThirdPartyDrives
+Type: plist boolean
+Failsafe: false
+Requirement: 10.6 (not required for older)
+Description: Apply vendor patches to IOAHCIBlockStorage.kext to enable native features for third-party drives, such as TRIM on SSDs or hibernation support on 10.15 and newer.
+Note: This option may be avoided on user preference. NVMe SSDs are compatible without the change. For AHCI SSDs on modern macOS version there is a dedicated built-in utility called trimforce. Starting from 10.15 this utility creates EnableTRIM variable in APPLE_BOOT_VARIABLE_GUID namespace with 01 00 00 00 value.
+```
+
+this means that once you boot with Opencore you need to enable TRIM on all SSDs with the command: `sudo trimforce enable`
+
+# Audio
+[up up up](#)
+
+* Sound card is `Realtek ALC221` which is drived by `AppleALC` on layout-id 22.
+
+kext patches in `/CLOVER/kexts/Other` applied:
+
+* `AppleALC.kext` Native macOS HD audio for not officially supported codecs
+
+`config.plist` patch applied:
+
+* Patch `Devices > PciRoot(0x0)/Pci(0x1f,0x3)`
+
+# Ethernet
+[up up up](#)
+
+* EliteDesk-800 has an `Intel® I219LM Gigabit Network Connection LOM` which works with `Fork of Mieze's Intel Mausi Network Driver by RehabMan`.
+
+* `IntelMausi.kext`
+
+### Graphics
+[up up up](#)
+
+* Supported card is `Intel HD Graphics 530` supported with edits in `config.plist`
+
+* `WhateverGreen.kext` Various patches necessary for certain ATI/AMD/Intel/Nvidia GPUs
+
+`config.plist` patch applied:
+
+* Patch `Devices > PciRoot(0x0)/Pci(0x2,0x0)`
+
+# USB Mapping
+[up up up](#)
+
+[USB Mapping](https://dortania.github.io/OpenCore-Post-Install/usb/intel-mapping/intel.html)
+
+```bash
+$ cd /Downloads/USBMap-master
+$ ./USBMap.command
+```
+
+check [sources.opencore/USBMap.kext.zip](./sources.opencore/USBMap.kext.zip)
+
+USB port patching is being done using USBMap.kext generated by HackingTool
+
+The following ports are **disabled** :
+
+* USB back, bottom row, 1rst from left
+* USB back, bottom row, 2nd from left
+* USB back, bottom row, 3rd from left
+* USB back, bottom row, 4rth from left
 
 # `kexts`
 [up up up](#)
 
-used 
+used
 
-* `Clover_v2.5k_r50103.pkg` - `From Official Site`
-* `as.vit9696.VirtualSMC (1.0.6)`  - `VirtualSMC.1.0.6.RELEASE.zip` **use only main kext**
-* `com.rehabman.driver.ACPIDebug (0.1.4)` - `RehabMan-Debug-2015-1230.zip`
-* `as.vit9696.Lilu (1.3.7)` - `Lilu.1.3.7.RELEASE.zip`
-* `as.vit9696.WhateverGreen (1.3.0)` - `WhateverGreen.1.3.0.RELEASE.zip`
-* `as.lvs1974.HibernationFixup (1.2.6)` - `HibernationFixup.1.2.6.RELEASE.zip`
-* `as.vit9696.AppleALC (1.3.9)` - `AppleALC.1.3.9.RELEASE.zip`
-* `org.tw.CodecCommander (2.7.1)` - `RehabMan-CodecCommander-2018-1003.zip`
-* `AppleIntelInfo.kext` - [Replacement for AppleIntelCPUPowerManagementInfo.kext](https://github.com/Piker-Alpha/AppleIntelInfo)
-* `SATA-unsupported.kext` *from [RehabMan/hack-tools](https://github.com/RehabMan/hack-tools/tree/master/kexts)*
-* `LiluFriend.kext` - `LiluFriend.1.1.0.RELEASE.zip`
-* `LiluFriendLite.kext` - *from [RehabMan/hack-tools](https://github.com/RehabMan/hack-tools/tree/master/template_kexts)*
-* `com.rehabman.driver.USBInjectAll (0.7.1)` - `RehabMan-USBInjectAll-2018-1108.zip`
+* [OpenCore-0.6.2-RELEASE.zip](https://github.com/acidanthera/OpenCorePkg/releases/download/0.6.2/OpenCore-0.6.2-RELEASE.zip)
+* [OcBinaryData](https://github.com/acidanthera/OcBinaryData)
+* [VirtualSMC-1.1.7-RELEASE.zip](https://github.com/acidanthera/VirtualSMC/releases/download/1.1.7/VirtualSMC-1.1.7-RELEASE.zip) (without `SMCLightSensor.kext` and `SMCDellSensors.kext`)
+* [Lilu-1.4.8-RELEASE.zip](https://github.com/acidanthera/Lilu/releases/download/1.4.8/Lilu-1.4.8-RELEASE.zip)
+* [WhateverGreen-1.4.3-RELEASE.zip](https://github.com/acidanthera/WhateverGreen/releases/download/1.4.3/WhateverGreen-1.4.3-RELEASE.zip)
+* [AppleALC-1.5.3-RELEASE.zip](https://github.com/acidanthera/AppleALC/releases/download/1.5.3/AppleALC-1.5.3-RELEASE.zip)
+* [RehabMan-USBInjectAll-2018-1108.zip](https://bitbucket.org/RehabMan/os-x-usb-inject-all/downloads/RehabMan-USBInjectAll-2018-1108.zip)
+* [IntelMausi-1.0.4-RELEASE.zip](https://github.com/acidanthera/IntelMausi/releases/download/1.0.4/IntelMausi-1.0.4-RELEASE.zip)
+* [RTCMemoryFixup-1.0.7-RELEASE.zip](https://github.com/acidanthera/RTCMemoryFixup/releases/download/1.0.7/RTCMemoryFixup-1.0.7-RELEASE.zip)
 
-* `Clover_v2.5k_r50103.pkg` - `From [Github](https://github.com/CloverHackyColor/CloverBootloader/releases) Site`
-* `as.vit9696.VirtualSMC (1.0.9)`  - `VirtualSMC-1.0.9-RELEASE.zip` **used VirtualSMC.kext and SMCBatteryManager.kext**
-* `com.rehabman.driver.ACPIDebug (0.1.4)` - `RehabMan-Debug-2015-1230.zip`
-* `s.vit9696.Lilu (1.4.1)` - `Lilu-1.4.1-RELEASE.zip`
-* `as.vit9696.WhateverGreen (1.3.6)` - `WhateverGreen-1.3.6-RELEASE.zip`
-* `as.lvs1974.HibernationFixup (1.3.2)` - `HibernationFixup-1.3.2-RELEASE.zip`
-* `as.vit9696.AppleALC (1.4.6)` - `AppleALC-1.4.6-RELEASE.zip`
-* `org.tw.CodecCommander (2.7.1)` - `RehabMan-CodecCommander-2018-1003.zip`
-* ~~`com.insanelymac.IntelMausiEthernet (2.4.1d1)` - `RehabMan-IntelMausiEthernet-v2-2018-1031.zip`~~
-* `as.acidanthera.mieze.IntelMausi (1.0.2)` -- `IntelMausi-1.0.2-RELEASE.zip`
-* `AppleIntelInfo.kext` - [Replacement for AppleIntelCPUPowerManagementInfo.kext](https://github.com/Piker-Alpha/AppleIntelInfo)
-* `SATA-unsupported.kext` *from [RehabMan/hack-tools](https://github.com/RehabMan/hack-tools/tree/master/kexts)*
-* `USBPorts.kext` created with [FB-Patcher](https://www.insanelymac.com/forum/topic/335018-intel-fb-patcher-v168/) very similar to the procedure from Rehabman's USBInjectAll
-* `LiluFriend.kext` - `LiluFriend.1.1.0.RELEASE.zip`
-* `LiluFriendLite.kext` - `LiluFriendLite.kext.zip`
-* ~~`com.rehabman.driver.USBInjectAll (0.7.1)` - `RehabMan-USBInjectAll-2018-1108.zip`~~
-
-## Power Management
+# Power Management
 [up up up](#)
 
-consult [this link](https://www.tonymacx86.com/threads/guide-native-power-management-for-laptops.175801/)
+consult [this link](https://www.tonymacx86.com/threads/guide-native-power-management-for-laptops.175801/) and [Fixing Sleep](https://dortania.github.io/OpenCore-Post-Install/universal/sleep.html#preparations)
 
-stock settings
-
-```shell
-$ sudo pmset -g
-System-wide power settings:
-Currently in use:
- standby              1
- Sleep On Power Button 1
- womp                 1
- autorestart          0
- hibernatefile        /var/vm/sleepimage
- proximitywake        1
- powernap             1
- networkoversleep     0
- disksleep            10
- standbydelayhigh     86400
- sleep                0 (sleep prevented by screensharingd)
- autopoweroffdelay    28800
- hibernatemode        3
- autopoweroff         1
- ttyskeepawake        1
- displaysleep         0
- highstandbythreshold 50
- standbydelaylow      0
-```
-
-**I did not do any edits you could try**
-
-```shell
-$ sudo pmset -a hibernatemode 0
-$ sudo rm /var/vm/sleepimage
-$ sudo mkdir /var/vm/sleepimage
-$ sudo pmset -a standby 0
-$ sudo pmset -a autopoweroff 0
-$ sudo pmset -g
-System-wide power settings:
-Currently in use:
- standby              0
- Sleep On Power Button 1
- womp                 1
- autorestart          0
- hibernatefile        /var/vm/sleepimage
- proximitywake        1
- powernap             1
- networkoversleep     0
- disksleep            10
- standbydelayhigh     86400
- sleep                0 (sleep prevented by screensharingd)
- autopoweroffdelay    28800
- hibernatemode        0
- autopoweroff         0
- ttyskeepawake        1
- displaysleep         0
- highstandbythreshold 50
- standbydelaylow      0
-```
-
-## `AppleIntelInfo.kext`
-[up up up](#)
-
-In order to log logCStates, logIGPU, logIPGStyle, logIntelRegs, logMSRs
-
-Also on PowerManagement Rehabman has a great [guide](https://www.tonymacx86.com/threads/guide-native-power-management-for-laptops.175801/)
+I did these but did not check further
 
 ```bash
-cd git
-git clone https://github.com/Piker-Alpha/AppleIntelInfo.git AppleIntelInfo.git
-open AppleIntelInfo.xcodeproj
-Product > Build
-Product > Build For > Running
-get it from
-~/Library/Developer/Xcode/DerivedData/AppleIntelInfo-foszpapuujmtjtcxjpclaslwzafu/Build/Products/Debug/AppleIntelInfo.kext/
-sudo chown -R root:wheel AppleIntelInfo.kext
-sudo chmod -R 755 AppleIntelInfo.kext
-sudo kextload AppleIntelInfo.kext
-sudo kextunload AppleIntelInfo.kext
-sudo cat /tmp/AppleIntelInfo.dat
+pmset -g
+sudo pmset autopoweroff 0
+sudo pmset powernap 0
+sudo pmset standby 0
+sudo pmset proximitywake 0
 ```
 
 # Check disks with `smartclt`

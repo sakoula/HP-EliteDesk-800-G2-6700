@@ -1,15 +1,18 @@
-# HP EliteDesk 800 G2 Tower PC (Skylake) for macOS Catalina & Mojave
+# HP EliteDesk 800 G2 Tower PC (Skylake) for macOS Catalina & Big Sur
 
 Hackintosh your HP EliteDesk 800 G2 Tower PC Skylake. This is intented to create a fully functional hackintosh for the HP EliteDesk 800 G2 Tower PC i7-6700 (Skylake).
 
 ## Important Notes
 [up up up](#)
 
-* This guide is for the **HP EliteDesk 800 G2 TWR PC i7-6700 (Skylake)**. 
+* This guide is for the **HP EliteDesk 800 G2 TWR PC i7-6700 (Skylake)**.
+* Following this guide you can run **Catalina 10.5.x up to 10.15.7** and **Big Sur**.
+* I stopped using **Clover**. This guide is for **OpenCore** only. If you need to run Clover for any reason you can check the older [Clover Guide](./README.clover.md)
 * All files used and detailed readmes are located in github [sakoula/HP-EliteDesk-800-G2-6700](https://github.com/sakoula/HP-EliteDesk-800-G2-6700/blob/master/Changelog.md)
 * The guide was fully tested with **BIOS N01 Ver. 2.36 07/18/2018**
-* Following this guide you can run any version of **Mojave 10.14.x up to 10.14.5** or any version of **Catalina 10.5.x up to 10.15.3**
 * macOS has been installed on an internal SSD. I have no experience of having both Windows and macOS on a single disk.
+* The following ports have been disabled to meet the maximum allowed ports in macOS USB back, bottom row/1rst from left/USB back, bottom row, 2nd from left/USB back, bottom row, 3rd from left/USB back, bottom row, 4rth from left. Please see [USB mapping](https://dortania.github.io/OpenCore-Post-Install/usb/#macos-and-the-15-port-limit) if you want to further customize it.
+
 * In order to be able to help you please provide full debug information useing the excellent [black-dragon74/OSX-Debug
 ](https://github.com/black-dragon74/OSX-Debug) tool.
 * Support and Discussion on this guide can be found at [tonymacx86.com](https://www.tonymacx86.com/threads/hp-elitedesk-800-g2-hp-prodesk-600-g2-success.261452/)
@@ -24,33 +27,26 @@ Hackintosh your HP EliteDesk 800 G2 Tower PC Skylake. This is intented to create
 - [Known Issues / Work in Progress](#known-issues--work-in-progress)
 - [Dual Monitor](#dual-monitor)
 - [Hardware Specifications](#hardware-specifications)
-- [Upgrade Guide Mojave \(10.14.6\) to Catalina \(10.15.3\)](#upgrade-guide-mojave-10146-to-catalina-10153)
 - [Installation Guide](#installation-guide)
-	- [Installation SSD](#installation-ssd)
-	- [Keys Shortcuts to Boot](#keys-shortcuts-to-boot)
-	- [BIOS setup](#bios-setup)
-	- [Preparing USB Flash Drive](#preparing-usb-flash-drive)
-	- [Install Catalina installer to the USB Flash Drive](#install-catalina-installer-to-the-usb-flash-drive)
-	- [Install `Clover` to the USB Flash Drive](#install-clover-to-the-usb-flash-drive)
-	- [Customize Clover on the USB Flash Drive](#customize-clover-on-the-usb-flash-drive)
-	- [Install Catalina](#install-catalina)
-	- [Install `Clover` on the macOS disk](#install-clover-on-the-macos-disk)
-	- [Customize Clover on the macOS disk](#customize-clover-on-the-macos-disk)
-	- [Move kexts to `/Library/Extensions`](#move-kexts-to-libraryextensions)
-	- [Create a USB Flash Drive just with `Clover` for emergencies](#create-a-usb-flash-drive-just-with-clover-for-emergencies)
-- [Postinstallation Steps](#postinstallation-steps)
-	- [Create a valid SMBIOS](#create-a-valid-smbios)
-	- [Disable Hibernation](#disable-hibernation)
+  - [Installation SSD](#installation-ssd)
+  - [Keys Shortcuts to Boot](#keys-shortcuts-to-boot)
+  - [BIOS setup](#bios-setup)
+  - [Fixing CFG Lock](#fixing-cfg-lock)
+  - [Preparing USB Flash Drive](#preparing-usb-flash-drive)
+  - [Customize USB Flash Drive](#customize-usb-flash-drive)
+  - [Generate a valid SMBIOS](#generate-a-valid-smbios)
+  - [Install macOS](#install-macos)
+  - [Post Install](#post-install)
+  - [Enable TRIM for SSDs](#enable-trim-for-ssds)
+  - [Clover to OpenCore Migration](#clover-to-opencore-migration)
+  - [Disable Hibernation](#disable-hibernation)
+- [Upgrade Guide](#upgrade-guide)
+  - [Upgrade from `Catalina 10.15.3` to `Catalina 10.15.7`](#upgrade-from-catalina-10153-to-catalina-10157)
+  - [Upgrade to `Big Sur`](#upgrade-to-big-sur)
 - [Benchmarking](#benchmarking)
-	- [Benchmarking Windows 10](#benchmarking-windows-10)
-	- [Benchmarking macOS 10.14.2](#benchmarking-macos-10142)
-	- [Benchmarking macOS 10.15.3](#benchmarking-macos-10153)
-- [Patching Information](#patching-information)
-	- [CPU](#cpu)
-	- [Audio](#audio)
-	- [Ethernet](#ethernet)
-	- [Graphics](#graphics)
-	- [USB](#usb)
+  - [Benchmarking Windows 10](#benchmarking-windows-10)
+  - [Benchmarking macOS 10.14.2 \(Clover\)](#benchmarking-macos-10142-clover)
+  - [Benchmarking macOS 10.15.3 \(Clover\)](#benchmarking-macos-10153-clover)
 - [Changelog](#changelog)
 - [Buy me a coffee or a beer](#buy-me-a-coffee-or-a-beer)
 - [Credits](#credits)
@@ -67,10 +63,11 @@ Hackintosh your HP EliteDesk 800 G2 Tower PC Skylake. This is intented to create
 ## Known Issues / Work in Progress
 [up up up](#)
 
-* sleep [hibernation](https://www.tonymacx86.com/threads/guide-native-power-management-for-laptops.175801/) *work in progress (not focus of the guide)*
-* check whether this computer is affected by [goodwin/ALCPlugFix](https://github.com/goodwin/ALCPlugFix) *work in progress*
+* sleep [hibernation](https://www.tonymacx86.com/threads/guide-native-power-management-for-laptops.175801/) *has not checked and is not the focus of the guide*
 * Audio through DisplayPorts *has not checked and is not the focus of the guide*
-* Enable HiDPI resolutions *work in progress*
+* Enable HiDPI resolutions *has not checked and is not the focus of the guide*
+
+* in `sources.opencore/IM171_0105_B20-10.12.4.firmware update ACPI Tables.zip` and `sources.opencore/IM171_0110_B00 10.13.0GM ACPI Tables.zip` you can find `iMac 17,1` ACPI tables from [insanelymac](https://www.insanelymac.com/forum/topic/334060-original-imac-171-firmware-acpi-tables-dsdt-ssdts-etc/?_fromLogin=1). It may be used to create new SSDT patches. All firmwares seems that they are available [gdbinit/firmware_vault](https://github.com/gdbinit/firmware_vault/tree/master/EFI).
 
 If you face another problem please open a issue.
 
@@ -126,74 +123,18 @@ hardware configuration with the following specs:
 
 full specs from the [HP site](http://store.hp.com/us/en/pdp/hp-elitedesk-800-g2-tower-pc-p-w5x93ut-aba--1)
 
-## Upgrade Guide Mojave (10.14.6) to Catalina (10.15.3)
-[up up up](#)
-
-* Step 1: Delete all hackintosh related kexts from `/Library/Extensions`:
-
-```
-sudo su -
-cd /Library/Extensions
-rm -rf AppleALC.kext 
-rm -rf CodecCommander.kext 
-rm -rf HibernationFixup.kext 
-rm -rf Lilu.kext 
-rm -rf LiluFriendLite.kext 
-rm -rf SATA-unsupported.kext 
-rm -rf USBPorts.kext 
-rm -rf VirtualSMC.kext 
-rm -rf WhateverGreen.kext
-rm -rf IntelMausiEthernet.kext
-kextcache -i /
-```
-
-* Step 2: mount the hard disk EFI partition and delete everything but your smbios settings from **config.plist**
-
-```
-# somehow mount the EFI e.g. with clover configurator e.g. mounted at /Volumes/EFI
-cd /Volumes/EFI/EFI/CLOVER
-cp config.plist ~/config.plist
-cd /Volumes/EFI/
-rm -r EFI*
-```
-
-* Step 3: install clover to the disk
-
-follow `Install Clover on the macOS disk` and `Customize Clover on the macOS disk` from this guide. 
-
-**Important** copy your SMBIOS settings from your `~/config.plist` to the installed `/Volumes/ESP/EFI/CLOVER/config.plist`
-
-* Step 4: upgrade
-
-Do the upgrade from the `System Preferences > Software Update`
-
-Once you get on the 10.15.3 you should not do any further steps.
-
 ## Installation Guide
 [up up up](#)
 
-These are the steps in order to install or upgrade your EliteDesk-800. There is a very detailed document on the steps followed and the customizations which can be found in [DETAILS.md](DETAILS.md).
+These are the steps in order to install or upgrade your EliteDesk-800. There is a very detailed document on the steps followed and the customizations which can be found in [DETAILS.opencore.md](DETAILS.opencore.md).
 
 There is a another document on how I setup my environment including all the tools and utilities I have used [ENVIRONMENT.wks.md](ENVIRONMENT.wks.md).
-
-You will need a working macOS installation (no matter the version) to create a USB Flash Drive with macOS.
 
 Start by downloading the latest version the customization files from the [releases](https://github.com/sakoula/HP-EliteDesk-800-G2-6700/releases) page. It includes:
 
 * `ELITEDESK800_EFI/`: efi directory including all kexts and customization needed
-* `addons/LiluFriendLite.kext`: `LiluFriendLite.kext` used in the installation
-* `addons/ApfsDriverLoader.efi`: `ApfsDriverLoader.efi` used in the installation
-* `addons/AudioDxe.efi`: `AudioDxe.efi` used in the installation
-* `addons/EmuVariableUefi.efi`: `EmuVariableUefi.efi` Emulated NVRAM
-* `addons/FwRuntimeServices.efi`: `FwRuntimeServices.efi` required from OcQuirks*
-* `addons/HFSPlus.efi`: `HFSPlus.efi` used in the installation
-* `addons/OcQuirks.efi`: `OcQuirks.efi` instead of OsxAptio*
-* `addons/OcQuirks.plist`: `OcQuirks.plist` instead of OsxAptio*
-* `addons/UsbKbDxe.efi`: `UsbKbDxe.efi` used in the installation
-* `addons/UsbMouseDxe.efi`: `UsbMouseDxe.efi` used in the installation
-* `addons/VirtualSmc.efi`: `VirtualSmc.efi` used in the installation
-* `addons/AppleGenericInput.efi`: `AppleGenericInput.efi` FileVault
-* `addons/AppleUiSupport.efi`: `AppleUiSupport.efi` FileVault
+
+The guide is being written based on the excellent [Dortania guides](https://dortania.github.io/getting-started/)
 
 ### Installation SSD
 [up up up](#)
@@ -214,7 +155,7 @@ Make sure that you check with this [link](http://support.hp.com/us-en/product/hp
 
 * `sp90164`: HP EliteDesk 800 G2 TWR/SFF SystemBIOS (N01) / 02.36 Rev.A / Aug 13, 2018
 
-> Note: Update the BIOS from the BIOS itself. On the CLOVER USB stick place bios file *N01_0236.bin* in directory *EFI/HP/BIOS/new*. On Finder create an extra EFI directory under the mounted EFI exactly as Clover do.
+> Note: Update the BIOS from the BIOS itself. On a USB stick with an EFI directory place bios file *N01_0236.bin* in directory *EFI/HP/BIOS/new*. On Finder create an extra EFI directory under the mounted EFI exactly as OpenCore do.
 
 Get into the `BIOS` and make the following changes:
 
@@ -235,7 +176,7 @@ BIOS Settings:
 * `Advanced > System Options > VTd` **Unchecked**
 * `Advanced > System Options > PCI*` **Unchecked**
 * `Advanced > System Options > Allow PCIe/PCI SERR# Interrupt` **Checked**
-* `Advanced > Built-In Device Options > Video memory size` **512MB** [here](https://www.tonymacx86.com/threads/skylake-intel-hd-530-integrated-graphics-working-as-of-10-11-4.188891/page-40) 
+* `Advanced > Built-In Device Options > Video memory size` **512MB** [here](https://www.tonymacx86.com/threads/skylake-intel-hd-530-integrated-graphics-working-as-of-10-11-4.188891/page-40)
 * `Advanced > Built-In Device Options > Audio Device` **Checked**
 * `Advanced > Built-In Device Options > Internal Speakers` **Checked**
 * `Advanced > Port Options > Serial Port A` **Unchecked**
@@ -254,159 +195,103 @@ BIOS Settings:
 * `Advanced > Remote Management Options > Active Management (AMT)` **Unchecked**
 * `Advanced > Option ROM Launch Policy > Configure Option ROM Launch Policy > All UEI` for the multimonitor support on boot
 
+### Fixing CFG Lock
+[up up up](#)
+
+**`CFG Lock` removal is not required**.
+
+It may be better to remove it. However this cannot be done easily on this BIOS since there is no hidden toggle in the BIOS setup as in others. This is a work in progresss. If you managed to patch it in any way please contact me.
+
+There is a number of information on the Internet. Start here [Fixing CFG Lock](https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock.html#what-is-cfg-lock) and see the following reddit posts:
+
+* [HP EliteDesk 800 G5 DM, Catalina 10.15.7](https://www.reddit.com/r/hackintosh/comments/jdzh6n/hp_elitedesk_800_g5_dm_catalina_10157/)
+* [CFG LOCK/Unlocking - Alternative method](https://www.reddit.com/r/hackintosh/comments/hz2rtm/cfg_lockunlocking_alternative_method/)
+* [ThinkPad CFG Lock](https://www.reddit.com/r/hackintosh/comments/g3n7ku/thinkpad_cfg_lock/)
+
+cannot be removed in this BIOS. This is a work in progress.
+
 ### Preparing USB Flash Drive
 [up up up](#)
 
-[Get a at least 16GB](https://support.apple.com/en-us/HT201372) USB Flash Drive and:
+[Get a at least 16GB](https://support.apple.com/en-us/HT201372) USB Flash Drive and follow [Creating the USB > Making the installer](https://dortania.github.io/OpenCore-Install-Guide/installer-guide/). Follow just the `Making the installer Guide`.
+
+If you need just a USB stick with OpenCore installation for booting an existing MacOS installation just format the USB stick as following:
 
 `Disk Utility > Select USB Device > Erase`:
 
-* GUID Partition Table
-* Name: USB
-* Format: MacOS Extended (Journaled)
+* Scheme = GUID Partition Map
+* Name: OC
+* Format: macOS Extended (Journaled)
 
-### Install Catalina installer to the USB Flash Drive
+### Customize USB Flash Drive
 [up up up](#)
 
-Download Catalina from Apple AppStore and run the following command to install it on the USB disk you just Erased.
+In this step you will add all the required opencore files to the USB flash drive.
 
-`$ sudo /Applications/Install macOS Catalina.app/Contents/Resources/createinstallmedia --volume /Volumes/USB`
+Download the latest [release](https://github.com/sakoula/HP-EliteDesk-800-G2-6700/releases) from github and unzip the archive. You will find an `ELITEDESK800_EFI` directory. Mount the USB Flash Drive's `EFI` partition on `/Volumes/EFI`. You can do this with many utilities (e.g. [MountEFI](https://github.com/corpnewt/MountEFI) or [mount_efi.sh](https://github.com/black-dragon74/OSX-Debug/blob/master/mount_efi.sh)).
 
-### Install `Clover` to the USB Flash Drive
+Move the `ELITEDESK800_EFI` to `/Volumes/EFI` and rename it to `EFI`. It will look like `/Volumes/EFI/EFI`
+
+### Generate a valid SMBIOS
 [up up up](#)
 
-Go with the stock clover and run `Clover_v2.5k_r5103` installer:
-
-*Continue* > *Continue* > *Change Install Location* > *Install macOS Catalina* > *Customize*
-
-*Clover for UEFI booting only*, *Install Clover in the ESP*
-
-### Customize Clover on the USB Flash Drive
-[up up up](#)
-
-Download the latest [release](https://github.com/sakoula/HP-EliteDesk-800-G2-6700/releases) from github and unzip the archive. You will find an `ELITEDESK800_EFI` directory and a `addons` directory. Mount the USB Flash Drive's `EFI` partition on `/Volumes/EFI`:
-
-1. create `EFI/CLOVER/drivers/UEFI` or erase everything in `EFI/CLOVER/drivers/UEFI` if it exists
-
-2. copy `ELITEDESK800_EFI/CLOVER/kexts/Other` from the downloaded file to USB's EFI to `EFI/CLOVER/kexts/Other`
-
-3. copy `addons/*.efi` and `addons/*.plist` from the downloaded file to USB's EFI to `EFI/CLOVER/drivers/UEFI/`
-
-4. copy `ELITEDESK800_EFI/CLOVER/ACPI/PATCHED/*` from the downloaded file to USB's EFI to `EFI/CLOVER/ACPI/PATCHED/*`
-
-5. copy `ELITEDESK800_EFI/CLOVER/config.plist` from the downloaded file to USB's EFI to `EFI/CLOVER/config.plist`
-
-### Install Catalina
-[up up up](#)
-
-To boot from the USB Flash Drive you can just hit `F9` and you will get the UEFI boot loader
-
-Boot from the USB and install Catalina on the hard disk. 
-
-> **Important**: During installation you will ask to reboot the machine. While on clover make sure to boot from `Boot macOS install from *** disk` disk. If you do not see this disk hit `F3` to show all the hidden disks. You may need to reboot multiple times.
-
-### Install `Clover` on the macOS disk
-[up up up](#)
-
-Once the installation is over you will need to install `Clover` bootloader on the hard disk that you have installed macOS in order to be able to boot without the USB Flash Drive.
-
-Run again the `Clover_v2.5k_r5103` installer:
-
-*Continue* > *Continue* > *Change Install Location* > *macOS location* > *Customize*
-
-*Clover for UEFI booting only*, *Install Clover in the ESP*
-
-*Install RC scripts on target volume*
-
-*Install Clover Preference Pane*
-
-
-### Customize Clover on the macOS disk
-[up up up](#)
-
-Download the latest [release](https://github.com/sakoula/HP-EliteDesk-800-G2-6700/releases) from github and unzip the archive. You will find an `ELITEDESK800_EFI` directory and a `addons` directory. 
-
-Mount the EFI partition of the macOS boot parition on `/Volumes/EFI`:
-
-1. create `EFI/CLOVER/drivers/UEFI` or erase everything in `EFI/CLOVER/drivers/UEFI` if it exists
-
-2. copy `ELITEDESK800_EFI/CLOVER/kexts/Other` from the downloaded file to USB's EFI to `EFI/CLOVER/kexts/Other`
-
-3. copy `addons/*.efi` and `addons/*.plist` from the downloaded file to USB's EFI to `EFI/CLOVER/drivers/UEFI/`
-
-4. copy `ELITEDESK800_EFI/CLOVER/ACPI/PATCHED/*` from the downloaded file to USB's EFI to `EFI/CLOVER/ACPI/PATCHED/*`
-
-5. copy `ELITEDESK800_EFI/CLOVER/config.plist` from the downloaded file to USB's EFI to `EFI/CLOVER/config.plist`
-
-### Move kexts to `/Library/Extensions`
-[up up up](#)
-
-**February 2020** Starting with Catalina I do not do this step!
-
-The right way to load kexts is **not** by injecting them through clover but installing them in `/Library/Extensions` and building them into the kernel cache. 
-
-Download the latest [release](https://github.com/sakoula/HP-EliteDesk-800-G2-6700/releases) from github and unzip the archive. You will find an `ELITEDESK800_EFI` directory and a `addons` directory. 
-
-Mount the EFI partition of the macOS boot parition on `/Volumes/EFI`:
-
-1. **move** `EFI/CLOVER/kexts/Other/*` from macOS boot parition to `/Library/Extensions/*`
-2. run from the console `$ sudo chown -R root:wheel /Library/Extensions/*`
-3. run from the console `$ sudo chmod -R 755 /Library/Extensions/*`
-4. run from the console `$ sudo kextcache -i /` to rebuild the caches
-5. **move** `addons/LiluFriendLite.kext` from the downloaded file to `/Library/Extensions/LiluFriendLite.kext`
-6. run from the console `$ sudo chown -R root:wheel /Library/Extensions/*`
-7. run from the console `$ sudo chmod -r 755 /Library/Extensions/*`
-8. run from the console `$ sudo kextcache -i /` to rebuild the caches
-
-**remember** that `kextcache` needs to be run twice
-
-### Create a USB Flash Drive just with `Clover` for emergencies
-[up up up](#)
-
-Get a small (2GB will work just fine) USB Flash Drive and:
-
-`Disk Utility > Select USB Device > Erase`:
-
-* GUID Partition Table
-* Name: CLOVER
-* Format: MS-DOS-FAT
-
-Run the `Clover_v2.5k_r5103` installer:
-
-*Continue* > *Continue* > *Change Install Location* > *USB Flash Drive* > *Customize*
-
-*Clover for UEFI booting only*, *Install Clover in the ESP*
-
-Download the latest [release](https://github.com/sakoula/HP-EliteDesk-800-G2-6700/releases) from github and unzip the archive. You will find an `ELITEDESK800_EFI` directory and a `addons` directory. Mount the USB Flash Drive's `EFI` partition on `/Volumes/EFI`:
-
-1. create `EFI/CLOVER/drivers/UEFI` or erase everything in `EFI/CLOVER/drivers/UEFI` if it exists
-
-2. copy `ELITEDESK800_EFI/CLOVER/kexts/Other` from the downloaded file to USB's EFI to `EFI/CLOVER/kexts/Other`
-
-3. copy `addons/*.efi` and `addons/*.plist` from the downloaded file to USB's EFI to `EFI/CLOVER/drivers/UEFI/`
-
-4. copy `ELITEDESK800_EFI/CLOVER/ACPI/PATCHED/*` from the downloaded file to USB's EFI to `EFI/CLOVER/ACPI/PATCHED/*`
-
-5. copy `ELITEDESK800_EFI/CLOVER/config.plist` from the downloaded file to USB's EFI to `EFI/CLOVER/config.plist`
-
-6. edit `config.plist` change the `SystemParameters`:
+Use [corpnewt/GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) to generate a valid `iMac17,1` SMBIOS and populate the following `/Volumes/EFI/OC/config.plist` with a text editor or [corpnewt/ProperTree](https://github.com/corpnewt/ProperTree):
 
 ```xml
+<key>PlatformInfo</key>
 <dict>
-  <key>InjectKexts</key>
-  <string>Detect</string>
-  <key>InjectSystemID</key>
-  <true/>
+    ...
+    <key>MLB</key>
+    <string>XXXXXXXXXXXXXXXXX</string>
+    ...
+    <key>SystemSerialNumber</key>
+    <string>XXXXXXXXXXXX</string>
+    ...
+    <key>SystemUUID</key>
+    <string>XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</string>
+    ...
 </dict>
 ```
 
-## Postinstallation Steps
+a valid SMBIOS is really important for Apple Services, iMessage & FaceTime. Check also the guide [An iDiot's Guide To iMessage ](https://www.tonymacx86.com/threads/an-idiots-guide-to-imessage.196827/)
+
+### Install macOS
 [up up up](#)
 
-### Create a valid SMBIOS
+During the first time you boot you **must** clear the NVRAM of the system (Clover and other Bootloader leave traces)
+
+To boot from the USB Flash Drive you can just hit `F9` and you will get the UEFI boot loader. Once you get to Clover hit `space` and select `CleanNvram.efi`. After it completes power off the computer wait for ten seconds and power on again.
+
+Boot again and [Install macOS](https://dortania.github.io/OpenCore-Install-Guide/installation/installation-process.html#macos-installer)
+
+### Post Install
 [up up up](#)
 
-* create a valid SMBIOS. This is really important and do not forget it. In order to setup your hackintosh machine to use Apple Services, iMessage & FaceTime follow the guide [An iDiot's Guide To iMessage ](https://www.tonymacx86.com/threads/an-idiots-guide-to-imessage.196827/)
+At this point OpenCore boot loader is installed only in the USB driver. You are required to install it on your bootable disk. Follow [Moving OpenCore from USB to macOS Drive](https://dortania.github.io/OpenCore-Post-Install/universal/oc2hdd.html#moving-opencore-from-usb-to-macos-drive)
+
+### Enable TRIM for SSDs
+[up up up](#)
+
+Since OpenCore does not reccomends to patch for TRIM using the bootloader you need to enable TRIM for all SSDs manually. Open terminal and use command: `sudo trimforce enable`. Reboot and check that TRIM is enabled on the `Apple > About this Mac > System Report`.
+
+### Clover to OpenCore Migration
+[up up up](#)
+
+This section is for those who run Clover and want to migrate to OpenCore. You need to:
+
+1. make sure you have a **backup USB flash drive** with clover in order to boot your system. Check [README.clover.md](./README.clover.md). If something goes wrong you may end up with an unbootable system! You have been warned!
+
+2. Create a USB flash drive without the macos installer. check [Preparing USB Flash Drive](#preparing-usb-flash-drive) and [Customize USB Flash Drive](#customize-usb-flash-drive).
+
+3. Remove Clover. Check [Converting from Clover to OpenCore](https://github.com/dortania/OpenCore-Install-Guide/tree/master/clover-conversion). TLDR you need to [Cleaning the Clover Junk in macOS](https://github.com/dortania/OpenCore-Install-Guide/tree/master/clover-conversion#cleaning-the-clover-junk-in-macos) and [Removing kexts from macOS(S/L/E and L/E)](https://github.com/dortania/OpenCore-Install-Guide/tree/master/clover-conversion#removing-kexts-from-macossle-and-le)
+
+4. Most likely you will hit the [stuck on OCB: LoadImage failed - Security Violation](https://dortania.github.io/OpenCore-Install-Guide/troubleshooting/extended/kernel-issues.html#stuck-on-ocb-loadimage-failed-security-violation). Follow the link and fix it now. **Do not disable SecureBootModel**. Follow the terminal instructions
+
+5. Boot from the USB and Clear the NVRAM. Check [Install macOS](#install-macOS) section.
+
+6. Boot from the USB flash drive. Make sure you have a working system
+
+7. Move OpenCore from USB to macOS Driver. Check [Post Install](#post-install)
 
 ### Disable Hibernation
 [up up up](#)
@@ -452,9 +337,24 @@ Always check your hibernatemode after updates and disable it. System updates ten
 And it may be a good idea to disable the other hibernation related options:
 
 ```shell
-sudo pmset -a standby 0
 sudo pmset -a autopoweroff 0
+sudo pmset -a powernap 0
+sudo pmset -a standby 0
+sudo pmset -a proxymitywake 0
 ```
+
+## Upgrade Guide
+[up up up](#)
+
+### Upgrade from `Catalina 10.15.3` to `Catalina 10.15.7`
+[up up up](#)
+
+Upgrade from within macOS. No special action is needed
+
+### Upgrade to `Big Sur`
+[up up up](#)
+
+expecting release of Big Sur in order to test it.
 
 ## Benchmarking
 [up up up](#)
@@ -477,7 +377,7 @@ sudo pmset -a autopoweroff 0
 * `LuxMark-v3.1 Native C++` 2569
 * `LuxMark-v3.1 Native C++` 2532
 
-### Benchmarking macOS 10.14.2
+### Benchmarking macOS 10.14.2 (Clover)
 [up up up](#)
 
 * `GeekBench x64 4.3.2 CPU` 4490/16686
@@ -492,7 +392,7 @@ sudo pmset -a autopoweroff 0
 * `AJA System Test Lite Seagate Barracuda 7200.14 ST1000DM003-1SB102:` 140MB/sec write, 161MB/sec read
 * `AJA System Test Lite Western Digital Caviar Green WDC WD10EAVS-14M4B0:` 84MB/sec write, 91MB/sec read
 
-### Benchmarking macOS 10.15.3
+### Benchmarking macOS 10.15.3 (Clover)
 [up up up](#)
 
 * `GeekBench x64 4.3.2 CPU` 4824/16966
@@ -506,91 +406,6 @@ sudo pmset -a autopoweroff 0
 * `AJA System Test Lite SanDisk (with trim) Samsung 860 EVO MZ-76E500B/EU:` 491MB/sec write, 522MB/sec read
 * `AJA System Test Lite Seagate Barracuda 7200.14 ST1000DM003-1SB102:` 122MB/sec write, 130MB/sec read
 * `AJA System Test Lite Western Digital Caviar Green WDC WD10EAVS-14M4B0:` 61MB/sec write, 70MB/sec read
-
-## Patching Information
-[up up up](#)
-
-Patching has been done using clover and [hotpatching ACPI](https://www.tonymacx86.com/threads/guide-using-clover-to-hotpatch-acpi.200137/). All the required files exist in the `ELITEDESK800_EFI` directory:
-
-* `CLOVER/config.plist` clover configuration file
-* `CLOVER/ACPI/origin` BIOS A06 ACPI aml files (from CLOVER with F4)
-* `CLOVER/ACPI/patched` ACPI hotpaches 
-* `CLOVER/kexts/Other` kexts required
-
-### CPU
-[up up up](#)
-
-* The model is `i7-6700`, and XCPM power management is native supported.
-* HWP is supported *work in progress*
-
-kext patches in `/CLOVER/kexts/Other` applied:
-
-* `Lilu.kext` Arbitrary kext and process patching on macOS
-* `HibernationFixup.kext` Lilu plugin intended to fix hibernation compatibility issues
-* `VirtualSMC.kext/SMCProcessor.kext/SMCSuperIO.kext` SMC emulator layer
-* `SATA-unsupported.kext` SATA unsupported
-
-ACPI patches in `/CLOVER/ACPI/patched` applied:
-
-* `SSDT-DMAC.aml` Add missing DMAC Device to enhace performance like a real Mac
-* `SSDT-HPET.aml` Disable HPET device by passing value 0 to HPTE to to behave more like a real Mac
-* `SSDT-MEM2.aml` Add missing MEM2 Device to enhace performance like a real Mac
-* `SSDT-PMCR.aml` Add missing PMCR Device to enhace performance like a real Mac
-* `SSDT-GPRW.aml` For solving instant wake by hooking GPRW
-* `SSDT-RMCF.aml` Configuration data for other SSDTs(SSDT-GPRW and SSDT-PTSWAK)
-* `SSDT-LPC.aml` To fix unsupported 8-series LPC devices (0x9d48).
-* `SSDT-PTSWAK.aml` fixing sleep _PTS and _WAK
-* `SSDT-SMBUS.aml` add BUS0 device
-* `SSDT-XOSI.aml` Override for host defined _OSI to handle "Darwin"
-
-### Audio
-[up up up](#)
-
-* Sound card is `Realtek ALC221` which is drived by `AppleALC` on layout-id 22.
-
-kext patches in `/CLOVER/kexts/Other` applied:
-
-* `AppleALC.kext` Native macOS HD audio for not officially supported codecs
-* `CodecCommander.kext` For various fixes
-
-`config.plist` patch applied:
-
-* Patch `Devices > PciRoot(0x0)/Pci(0x1f,0x3)`
-
-### Ethernet
-[up up up](#)
-
-* EliteDesk-800 has an `Intel® I219LM Gigabit Network Connection LOM` which works with `Fork of Mieze's Intel Mausi Network Driver by RehabMan`.
-
-kext patches in `/CLOVER/kexts/Other` applied:
-
-* `IntelMausi.kext`
-
-### Graphics
-[up up up](#)
-
-* Supported card is `Intel HD Graphics 530` supported with edits in `config.plist`
-
-kext patches in `/CLOVER/kexts/Other` applied:
-
-* `WhateverGreen.kext` Various patches necessary for certain ATI/AMD/Intel/Nvidia GPUs
-
-`config.plist` patch applied:
-
-* Patch `Devices > PciRoot(0x0)/Pci(0x2,0x0)`
-* Patch `KernelAndKextPatches > KextsToPatch > HD530 dual monitor patch for HP EliteDesk800 G2 TWR` # for a working two monitor patch
-
-### USB
-[up up up](#)
-
-USB port patching is being done using USBPorts.kext generated by HackingTool
-
-The following ports are **disabled** . Check [SSDT-UIAC.dsl](patches.elitedesk800/SSDT-UIAC.dsl) for more information on patching
-
-* USB back, bottom row, 1rst from left
-* USB back, bottom row, 2nd from left
-* USB back, bottom row, 3rd from left
-* USB back, bottom row, 4rth from left
 
 ## Changelog
 [up up up](#)
@@ -608,6 +423,8 @@ If you feel so you can [buy me](http://google.com) a coffee or a beer!
 - Thanks to [Piker-Alpha](https://pikeralpha.wordpress.com/)
 
 - Thanks to [vit9696/Acidanthera](https://github.com/acidanthera) for providing [AppleALC](https://github.com/acidanthera/AppleALC), [CPUFriend](https://github.com/acidanthera/CPUFriend), [HibernationFixup](https://github.com/acidanthera/HibernationFixup), [Lilu](https://github.com/acidanthera/Lilu), `USBPorts`, [VirtualSMC](https://github.com/acidanthera/VirtualSMC), and [WhateverGreen](https://github.com/acidanthera/WhateverGreen).
+
+- Thanks to [Dortania](https://dortania.github.io/) for their amazing guides!
 
 - Thanks to [alexandred](https://github.com/alexandred) and [hieplpvip](https://github.com/hieplpvip) for providing [VoodooI2C](https://github.com/alexandred/VoodooI2C).
 
