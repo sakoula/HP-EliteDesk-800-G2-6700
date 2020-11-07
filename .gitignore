@@ -7,3 +7,4 @@ backup/*
 old/*
 sources.opencore/bios.settings.*.txt
 !.gitignore
+framebuffer/*
