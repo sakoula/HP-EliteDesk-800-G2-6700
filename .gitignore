@@ -8,3 +8,4 @@ old/*
 sources.opencore/bios.settings.*.txt
 !.gitignore
 framebuffer/*
+sources.opencore/bios.settings.*
