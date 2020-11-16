@@ -58,11 +58,33 @@
 
     - migrated from `Clover` to `OpenCore 0.6.2`
     - tested for `10.15.3`
-    - upgraded and tested for `10.15.17`
+    - upgraded and tested for `10.15.7`
     - updated guide
     - upgrade to `VirtualSMC-1.1.7`
     - upgrade to `Lilu-1.4.8`
     - upgrade to `AppleALC-1.5.3`
-    - upgrade to `ntelMausi-1.0.4`
+    - upgrade to `IntelMausi-1.0.4`
     - upgrade to `RTCMemoryFixup-1.0.7`
+    - upgrade to `WhateverGreen-1.4.3`
+
+- 17-11-2020
+
+    - clean up repository
+    - updated Benchmarks
+    - population DeviceProperties @ config.plist
+    - migrated from `OpenCore 0.6.2` to `OpenCore 0.6.3`
+    - tested for `Catalina 10.15.7`
+    - upgraded and tested for `Big Sur 11.0.1`
+    - upgrade to `VirtualSMC-1.1.8`
+    - upgrade to `Lilu-1.4.9`
+    - upgrade to `AppleALC-1.5.4`
+    - upgrade to `WhateverGreen-1.4.4`
+    - upgrade to `IntelMausi-1.0.4`
+    - upgrade to `RTCMemoryFixup-1.0.7`
+    - remove `-cdfon` due to [Broken Kexts in Big Sur](https://dortania.github.io/hackintosh/updates/2020/11/12/bigsur-new.html)
+
+
+
+
+
 

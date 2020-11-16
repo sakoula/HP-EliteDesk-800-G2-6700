@@ -86,7 +86,7 @@ define a `HACK` environment variable for all your hackintosh work. Add `$HACK/bi
 readme:
 
 * `$HACK/wks/DETAILS.clover.md` *very detailed technical details on how to patch a EliteDesk-800*
-* `$HACK/wks/README.md` *github readme*
+* `$HACK/wks/README.clover.md` *github readme*
 * `$HACK/wks/CHANGELOG.md` *github changelog*
 * `$HACK/wks/ENVIRONMENT.wks.md` *my environment to work with hackintoshes*
 

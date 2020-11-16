@@ -3,8 +3,10 @@ WHAT.md
 .*
 */.*
 patches.elitedesk800.*/smbios*
+patches.elitedesk800.*/*.aml
 backup/*
 old/*
 sources.opencore/bios.settings.*.txt
-!.gitignore
 framebuffer/*
+release/*
+!.gitignore

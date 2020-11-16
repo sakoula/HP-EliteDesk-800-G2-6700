@@ -1,4 +1,4 @@
-# HP EliteDesk 800 G2 Tower PC (Skylake) for macOS Mojave
+# HP EliteDesk 800 G2 Tower PC (Skylake) for macOS Catalina & Big Sur
 
 # Table of Contents
 
@@ -43,12 +43,11 @@
 - [TRIM on SSDs](#trim-on-ssds)
 - [Audio](#audio)
 - [Ethernet](#ethernet)
-        - [Graphics](#graphics)
+- [Graphics](#graphics)
 - [USB Mapping](#usb-mapping)
+- [Sleep](#sleep)
 - [`kexts`](#kexts)
-- [Power Management](#power-management)
 - [Check disks with `smartclt`](#check-disks-with-smartclt)
-- [`patches.elitedesk800` DSDT hotpatches](#patcheselitedesk800-dsdt-hotpatches)
 
 <!-- /MarkdownTOC -->
 
@@ -475,7 +474,9 @@ start with bare minimum according to documentation
 <key>PciRoot(0x0)/Pci(0x1f,0x3)</key>
 <dict>
     <key>AAPL,slot-name</key>
-    <string>Internal</string>
+    <string>Internal@0,31,3</string>
+    <key>device_type</key>
+    <string>Audio device</string>
     <key>hda-idle-support</key>
     <string>1</string>
     <key>layout-id</key>
@@ -494,7 +495,11 @@ video, Intel HD Graphics 530, 0x19120000, stolenmem patch
     <key>AAPL,ig-platform-id</key>
     <data>AAASGQ==</data>
     <key>AAPL,slot-name</key>
-    <string>Internal</string>
+    <string>Internal@0,2,0</string>
+    <key>device_type</key>
+    <string>Display controller</string>
+    <key>model</key>
+    <string>Intel HD Graphics 530</string>
     <key>device-id</key>
     <data>EhkAAA==</data>
     <key>framebuffer-con0-busid</key>
@@ -535,6 +540,27 @@ video, Intel HD Graphics 530, 0x19120000, stolenmem patch
     <data>AQAAAA==</data>
     <key>framebuffer-patch-enable</key>
     <data>AQAAAA==</data>
+</dict>
+```
+
+```xml
+<key>PciRoot(0x0)/Pci(0x14,0x0)</key>
+<dict>
+    <key>AAPL,slot-name</key>
+    <string>Internal@0,20,0</string>
+    <key>device_type</key>
+    <string>USB controller</string>
+    <key>model</key>
+    <string>100 Series/C230 Series Chipset Family USB 3.0 xHCI Controller</string>
+</dict>
+<key>PciRoot(0x0)/Pci(0x1F,0x6)</key>
+<dict>
+    <key>AAPL,slot-name</key>
+    <string>Internal@0,31,6</string>
+    <key>device_type</key>
+    <string>Ethernet controller</string>
+    <key>model</key>
+    <string>Ethernet Connection (2) I219-LM</string>
 </dict>
 ```
 
@@ -582,7 +608,6 @@ video, Intel HD Graphics 530, 0x19120000, stolenmem patch
 * `Generic > ROM > 112233445566` Mac address of the buildin interface.
 * `Generic > SystemProductName > iMac17,1`
 * `Generic > MLB > XXXXXXXXXXXXXXXXX`
-* `Generic > SystemSerialNumber > C02RG1OEGG7L`
 * `Generic > SystemSerialNumber > XXXXXXXXXXXX`
 * `Generic >  SystemUUID > XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX`
 * `Automatic > True` Generates PlatformInfo based on Generic section instead of DataHub, NVRAM, and SMBIOS sections#
@@ -638,6 +663,8 @@ mv OcBinaryData-master/Resources /Volumes/EFI/EFI/OC/Resources
 # How to Debug
 [up up up](#)
 
+> Note: In a production machine change `Misc > Debug > AppleDebug > True` to `Misc > Debug > AppleDebug > False` to avoid all debug files writen on the file system. reference [OpenCore Debugging](https://dortania.github.io/OpenCore-Install-Guide/troubleshooting/debug.html#opencore-debugging)
+
 * `Misc > Debug > AppleDebug > True`: Enables boot.efi logging, useful for debugging. Note this is only supported on 10.15.4 and newer
 * `Misc > Debug > ApplePanic > True`: Attempts to log kernel panics to disk
 * `Misc > Debug > DisableWatchDog > True`: Disables the UEFI watchdog, can help with early boot issues
@@ -689,7 +716,7 @@ this means that once you boot with Opencore you need to enable TRIM on all SSDs 
 
 * Sound card is `Realtek ALC221` which is drived by `AppleALC` on layout-id 22.
 
-kext patches in `/CLOVER/kexts/Other` applied:
+kext patches in `OC/Kexts` applied:
 
 * `AppleALC.kext` Native macOS HD audio for not officially supported codecs
 
@@ -704,7 +731,7 @@ kext patches in `/CLOVER/kexts/Other` applied:
 
 * `IntelMausi.kext`
 
-### Graphics
+# Graphics
 [up up up](#)
 
 * Supported card is `Intel HD Graphics 530` supported with edits in `config.plist`
@@ -736,6 +763,21 @@ The following ports are **disabled** :
 * USB back, bottom row, 3rd from left
 * USB back, bottom row, 4rth from left
 
+# Sleep
+[up up up](#)
+
+consult [this link](https://www.tonymacx86.com/threads/guide-native-power-management-for-laptops.175801/) and [Fixing Sleep](https://dortania.github.io/OpenCore-Post-Install/universal/sleep.html#preparations)
+
+I did these but did not check further
+
+```bash
+pmset -g
+sudo pmset autopoweroff 0
+sudo pmset powernap 0
+sudo pmset standby 0
+sudo pmset proximitywake 0
+```
+
 # `kexts`
 [up up up](#)
 
@@ -750,21 +792,6 @@ used
 * [RehabMan-USBInjectAll-2018-1108.zip](https://bitbucket.org/RehabMan/os-x-usb-inject-all/downloads/RehabMan-USBInjectAll-2018-1108.zip)
 * [IntelMausi-1.0.4-RELEASE.zip](https://github.com/acidanthera/IntelMausi/releases/download/1.0.4/IntelMausi-1.0.4-RELEASE.zip)
 * [RTCMemoryFixup-1.0.7-RELEASE.zip](https://github.com/acidanthera/RTCMemoryFixup/releases/download/1.0.7/RTCMemoryFixup-1.0.7-RELEASE.zip)
-
-# Power Management
-[up up up](#)
-
-consult [this link](https://www.tonymacx86.com/threads/guide-native-power-management-for-laptops.175801/) and [Fixing Sleep](https://dortania.github.io/OpenCore-Post-Install/universal/sleep.html#preparations)
-
-I did these but did not check further
-
-```bash
-pmset -g
-sudo pmset autopoweroff 0
-sudo pmset powernap 0
-sudo pmset standby 0
-sudo pmset proximitywake 0
-```
 
 # Check disks with `smartclt`
 [up up up](#)
@@ -1166,31 +1193,3 @@ Selective self-test flags (0x0):
   After scanning selected spans, do NOT read-scan remainder of disk.
 If Selective self-test is pending on power-up, resume after 0 minute delay.
 ```
-
-[up up up](#)
-
-* sleep [hibernation](https://www.tonymacx86.com/threads/guide-native-power-management-for-laptops.175801/) *work in progress (not focus of the guide)*
-* check whether this computer is affected by [goodwin/ALCPlugFix](https://github.com/goodwin/ALCPlugFix) *work in progress*
-* Audio through DisplayPorts *has not checked and is not the focused of the guide*
-* Enable HiDPI resolutions *work in progress*
-
-# `patches.elitedesk800` DSDT hotpatches
-[up up up](#)
-
-```
-SSDT-DMAC.dsl
-SSDT-EC.dsl
-SSDT-GPRW.dsl
-SSDT-HPET.dsl
-SSDT-LPC.dsl
-SSDT-MEM2.dsl
-SSDT-PMCR.dsl
-SSDT-PTSWAK.dsl
-SSDT-RMCF.dsl
-SSDT-RMDT.dsl
-SSDT-SMBUS.dsl
-SSDT-UIAC.dsl
-SSDT-USBX.dsl
-SSDT-XOSI.dsl
-```
-

@@ -268,9 +268,9 @@ $HACK/bin/gfxutil -f HDEF
 
 check code @ [headkaze/Hackintool](https://github.com/headkaze/Hackintool)
 
-Download [Hackintool](http://headsoft.com.au/download/mac/Hackintool.zip)
-
 ```bash
+cp /Downloads
+wget https://github.com/headkaze/Hackintool/releases/download/3.4.7/Hackintool.zip
 unzip Hackintool.zip
 \rm -rf  \$HACK/bin/Hackintool.app/
 mv Hackintool.app $HACK/bin
