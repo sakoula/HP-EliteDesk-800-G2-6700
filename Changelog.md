@@ -67,7 +67,7 @@
     - upgrade to `RTCMemoryFixup-1.0.7`
     - upgrade to `WhateverGreen-1.4.3`
 
-- 17-11-2020
+- 16-11-2020
 
     - clean up repository
     - updated Benchmarks
@@ -83,8 +83,22 @@
     - upgrade to `RTCMemoryFixup-1.0.7`
     - remove `-cdfon` due to [Broken Kexts in Big Sur](https://dortania.github.io/hackintosh/updates/2020/11/12/bigsur-new.html)
 
+- 31-12-2020
 
+    - updated Benchmarks for 11.0.1
+    - Updated `USBMap.kext` based on [corpnewt/USBMap](https://github.com/corpnewt/USBMap) and [USB Mapping](https://dortania.github.io/OpenCore-Post-Install/usb/intel-mapping/intel.html)
+    - upgraded from `OpenCore 0.6.3` to `OpenCore 0.6.4`
+    - upgraded from `Big Sur 11.0.1` to `Big Sur 11.1`
+    - upgrade to `Lilu-1.5.0`
+    - upgrade to `AppleALC-1.5.5`
+    - upgrade to `WhateverGreen-1.4.5`
+    - upgrade to `VirtualSMC-1.1.9`
 
+- 16-02-2021
 
-
-
+    - upgraded from `OpenCore 0.6.4` to `OpenCore 0.6.6`
+    - upgraded from `Big Sur 11.1` to `Big Sur 11.2.1`
+    - upgrade to `Lilu-1.5.1`
+    - upgrade to `AppleALC-1.5.7`
+    - upgrade to `WhateverGreen-1.4.7`
+    - upgrade to `VirtualSMC-1.2.0`

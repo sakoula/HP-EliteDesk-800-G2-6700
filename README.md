@@ -6,7 +6,7 @@ Hackintosh your HP EliteDesk 800 G2 Tower PC Skylake. This is intented to create
 [up up up](#)
 
 * This guide is for the **HP EliteDesk 800 G2 TWR PC i7-6700 (Skylake)**.
-* Following this guide you can run **Big Sur 11.0.1**. and **Catalina 10.5.x up to 10.15.7**
+* Following this guide you can run **Big Sur 11.2.1**. and **Catalina 10.5.x up to 10.15.7**
 * I stopped using **Clover**. This guide is for **OpenCore** only. If you need to run Clover for any reason you can check the older [Clover Guide](./README.clover.md)
 * All files used and detailed readmes are located in github [sakoula/HP-EliteDesk-800-G2-6700](https://github.com/sakoula/HP-EliteDesk-800-G2-6700/blob/master/Changelog.md)
 * The guide was fully tested with **BIOS N01 Ver. 2.36 07/18/2018**
@@ -84,6 +84,7 @@ full specs from the [HP site](http://store.hp.com/us/en/pdp/hp-elitedesk-800-g2-
   - [Benchmarking macOS 10.14.2 \(Clover\)](#benchmarking-macos-10142-clover)
   - [Benchmarking macOS 10.15.3 \(Clover\)](#benchmarking-macos-10153-clover)
   - [Benchmarking macOS 10.15.7 \(OpenCore\)](#benchmarking-macos-10157-opencore)
+  - [Benchmarking macOS 11.0.1 \(OpenCore 0.6.3\)](#benchmarking-macos-1101-opencore-063)
 - [FAQ](#faq)
   - [Disabling SIP](#disabling-sip)
   - [OCB: LoadImage failed - Security Violation](#ocb-loadimage-failed---security-violation)
@@ -421,11 +422,27 @@ Use the latest release from here boot in Catalina and upgrade.
 * `CINEBENCH R15.038_RC184115 OpenGL` 29.41 fps
 * `CINEBENCH R15.038_RC184115 CPU` 796cb
 * `LuxMark-v3.1 OpenCL GPU` 2204
-* `LuxMark-v3.1 OpenCL CPU`
-* `Heaven FPS`  `Score`  `Min FPS`  `Max FPS`
+* `LuxMark-v3.1 OpenCL CPU` 2026
+* `Heaven FPS` 12.1  `Score` 305 `Min FPS` 6.0 `Max FPS` 21.4
 * `AJA System Test Lite SanDisk (with trim) Samsung 860 EVO MZ-76E500B/EU:` 456MB/sec write, 490MB/sec read
 * `AJA System Test Lite Seagate Barracuda 7200.14 ST1000DM003-1SB102:` 122MB/sec write, 130MB/sec read
 * `AJA System Test Lite Western Digital Caviar Green WDC WD10EAVS-14M4B0:` 61MB/sec write, 70MB/sec read
+
+
+### Benchmarking macOS 11.0.1 (OpenCore 0.6.3)
+[up up up](#)
+
+* `GeekBench x64 4.3.2 CPU` 5023/17313
+* `GeekBench x64 4.3.2 GPU/OpenCl` 32699
+* `GeekBench x64 4.3.2 GPU/Metal` 22887
+* `CINEBENCH R15.038_RC184115 OpenGL` 33.32 fps
+* `CINEBENCH R15.038_RC184115 CPU` 794cb
+* `LuxMark-v3.1 OpenCL GPU` 2215
+* `LuxMark-v3.1 OpenCL CPU` 2063
+* `Heaven FPS` 12.2 `Score` 307 `Min FPS` 5.8 `Max FPS` 36
+* `AJA System Test Lite SanDisk (with trim) Samsung 860 EVO MZ-76E500B/EU:` 463MB/sec write, 501MB/sec read
+* `AJA System Test Lite Seagate Barracuda 7200.14 ST1000DM003-1SB102:` 134MB/sec write, 144MB/sec read
+* `AJA System Test Lite Western Digital Caviar Green WDC WD10EAVS-14M4B0:` 51MB/sec write, 50MB/sec read
 
 ## FAQ
 [up up up](#)
